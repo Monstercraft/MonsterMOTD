@@ -5,22 +5,20 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerListener;
 
-public class DeathExplosionPlayerListener extends PlayerListener{
-    
-    public DeathExplosion plugin;
-    
-    public DeathExplosionPlayerListener(DeathExplosion instance) {
-    plugin = instance;
-}
+public class DeathExplosionPlayerListener extends PlayerListener {
 
-    public void PlayerDeath(PlayerDeathEvent event) {
-            Entity entity = event.getEntity();
+	private DeathExplosion plugin;
 
-        if (entity instanceof TNTPrimed){
-            TNTPrimed tnt = (TNTPrimed) entity;
+	public DeathExplosionPlayerListener(DeathExplosion instance) {
+		plugin = instance;
+	}
 
-            
-            event.getEntity().getWorld().createExplosion(tnt.getLocation(), 0);
-        }
-    }
+	public void PlayerDeath(PlayerDeathEvent event) {
+		Entity entity = event.getEntity();
+
+		if (entity instanceof TNTPrimed) {
+			TNTPrimed tnt = (TNTPrimed) entity;
+			event.getEntity().getWorld().createExplosion(tnt.getLocation(), 0);
+		}
+	}
 }
