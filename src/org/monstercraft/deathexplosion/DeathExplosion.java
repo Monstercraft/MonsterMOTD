@@ -1,4 +1,4 @@
-package me.dqtreats.DeathExplosion;
+package org.monstercraft.deathexplosion;
 
 import java.util.logging.Logger;
 import org.bukkit.event.Event;

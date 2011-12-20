@@ -1,4 +1,4 @@
-package me.dqtreats.DeathExplosion;
+package org.monstercraft.deathexplosion;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.TNTPrimed;
