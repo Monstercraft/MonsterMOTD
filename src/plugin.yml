@@ -1,0 +1,6 @@
+name: DeathExplosion
+main: me.dqtreats.DeathExplosion.DeathExplosion
+version: 1.0
+description: >
+             Explosion
+commands:
