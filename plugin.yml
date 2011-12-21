@@ -1,4 +1,4 @@
-name: MonsterIRC
+name: DeathExplosion
 main: org.monstercraft.deathexplosion.DeathExplosion
 version: 1.0
 commands:
