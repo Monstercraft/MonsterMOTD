@@ -10,7 +10,7 @@ public class DeathExplosion extends JavaPlugin {
 
 	private DeathExplosionPlayerListener playerListener;
 	Logger log = Logger.getLogger("Minecraft");
-
+@Override
 	public void onEnable() {
 		playerListener = new DeathExplosionPlayerListener(
 					this);
@@ -19,7 +19,7 @@ public class DeathExplosion extends JavaPlugin {
 		pm.registerEvent(Event.Type.ENTITY_DEATH, playerListener,
 				Event.Priority.Normal, this);
 	}
-
+@Override
 	public void onDisable() {
 		log.info("DeathExplosion has been disabled.");
 	}
