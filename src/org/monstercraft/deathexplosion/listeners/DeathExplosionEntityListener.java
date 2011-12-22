@@ -24,12 +24,16 @@ public class DeathExplosionEntityListener extends EntityListener {
 		if (entity instanceof Player) {
 			Player player = (Player) event.getEntity();
 			if (plugin.map.containsKey(player.getName())) {
+				if (ran.nextInt(1000000) <= plugin.map.get(player.getName()))
 				try {
 					World world = player.getWorld();
 					world.createExplosion(player.getLocation(), 5);
 					plugin.map.remove(player.getName());
+					player.sendMessage("You have exploded.");
 				} catch (Exception e) {
 				}
+			} else {
+				player.sendMessage("We are sorry, you didn't explode.");
 			}
 		}
 	}
