@@ -2,6 +2,6 @@ name: DeathExplosion
 main: org.monstercraft.deathexplosion.DeathExplosion
 version: 1.0
 commands:
-  default:
-    description: default command
+  boom:
+    description: boom
     usage: /<command> [msg]

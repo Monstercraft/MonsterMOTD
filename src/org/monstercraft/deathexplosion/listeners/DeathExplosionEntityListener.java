@@ -9,26 +9,26 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.monstercraft.deathexplosion.DeathExplosion;
 
-public class DeathExplosionPlayerListener extends EntityListener {
-	
-	private Random ran = new Random();
+public class DeathExplosionEntityListener extends EntityListener {
 
-	public DeathExplosionPlayerListener(DeathExplosion instance) {
+	private Random ran = new Random();
+	private DeathExplosion plugin;
+
+	public DeathExplosionEntityListener(DeathExplosion plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
 		Entity entity = event.getEntity();
 		if (entity instanceof Player) {
-			int r = ran.nextInt(2);
-			if (r == 1) {
-				Player player = (Player) event.getEntity();
+			Player player = (Player) event.getEntity();
+			if (plugin.map.containsKey(player.getName())) {
 				try {
 					World world = player.getWorld();
-					world.createExplosion(player.getLocation(),
-					5 + ran.nextInt(6));
+					world.createExplosion(player.getLocation(), 5);
+					plugin.map.remove(player.getName());
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		}
