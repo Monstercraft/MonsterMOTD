@@ -3,6 +3,8 @@ package org.monstercraft.deathexplosion.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,9 +13,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.util.wrappers.TombStone;
 
@@ -24,10 +29,29 @@ import com.griefcraft.model.ProtectionTypes;
 public class Methods {
 
 	private DeathExplosion plugin;
+	public HashMap<Player, Timer> timer = new HashMap<Player, Timer>();
+	public HashMap<Player, TombStone> blocks = new HashMap<Player, TombStone>();
+	private Thread watch;
 
 	public Methods(DeathExplosion plugin) {
 		this.plugin = plugin;
+		watch = new Thread(TIMERS);
+		watch.setDaemon(true);
+		watch.setPriority(Thread.NORM_PRIORITY);
+		watch.start();
 	}
+
+	public Runnable TIMERS = new Runnable() {
+		public void run() {
+			for (Player p : timer.keySet()) {
+				Timer t = timer.get(p);
+				if (t.getRemaining() == 0) {
+					removeLWC(p, blocks.get(p));
+					timer.remove(p);
+				}
+			}
+		}
+	};
 
 	public void advertiseDeath(String name, String world, double x, double y,
 			double z) {
@@ -41,15 +65,43 @@ public class Methods {
 		}
 	}
 
-	public void registerLWC(Player player, TombStone tBlock) {
+	public void removeLWC(Player player, TombStone tBlock) {
 		LWC lwc = ((LWCPlugin) plugin.getPlugin("LWC")).getLWC();
 		if (lwc != null) {
 			Block block = tBlock.getBlock();
+			Block sblock = block.getWorld().getBlockAt(block.getX(),
+					block.getY() + 1, block.getZ());
 			lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
 					ProtectionTypes.PUBLIC, block.getWorld().getName(),
 					player.getName(), "", block.getX(), block.getY(),
 					block.getZ());
+			lwc.getPhysicalDatabase().registerProtection(sblock.getTypeId(),
+					ProtectionTypes.PUBLIC, sblock.getWorld().getName(), "",
+					"", sblock.getX(), sblock.getY(), sblock.getZ());
+			block.setTypeId(0);
+			sblock.setTypeId(0);
+
 		}
+		blocks.remove(player);
+	}
+
+	public void registerLWC(Player player, TombStone tBlock, boolean b) {
+		LWC lwc = ((LWCPlugin) plugin.getPlugin("LWC")).getLWC();
+		if (lwc != null) {
+			Block block = tBlock.getBlock();
+			if (b) {
+				lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
+						ProtectionTypes.PRIVATE, block.getWorld().getName(),
+						player.getName(), "", block.getX(), block.getY(),
+						block.getZ());
+			} else {
+				lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
+						ProtectionTypes.PUBLIC, block.getWorld().getName(),
+						player.getName(), "", block.getX(), block.getY(),
+						block.getZ());
+			}
+		}
+		blocks.put(player, tBlock);
 	}
 
 	public double getYawTo(Location from, Location to) {
@@ -190,5 +242,104 @@ public class Methods {
 				|| mat == Material.BROWN_MUSHROOM
 				|| mat == Material.RED_MUSHROOM || mat == Material.FIRE
 				|| mat == Material.CROPS || mat == Material.SNOW || mat == Material.SUGAR_CANE);
+	}
+
+	public void saveItems(Player player, List<ItemStack> items, boolean b) {
+		try {
+			if (Variables.chest) {
+				Location loc = player.getLocation();
+				Block block = player.getWorld().getBlockAt(loc.getBlockX(),
+						loc.getBlockY(), loc.getBlockZ());
+				if (block.getType() == Material.STEP
+						|| block.getType() == Material.TORCH
+						|| block.getType() == Material.REDSTONE_WIRE
+						|| block.getType() == Material.RAILS
+						|| block.getType() == Material.STONE_PLATE
+						|| block.getType() == Material.WOOD_PLATE
+						|| block.getType() == Material.REDSTONE_TORCH_ON
+						|| block.getType() == Material.REDSTONE_TORCH_OFF
+						|| block.getType() == Material.CAKE_BLOCK) {
+					block = player.getWorld().getBlockAt(loc.getBlockX(),
+							loc.getBlockY() + 1, loc.getBlockZ());
+				}
+				block = plugin.methods.findPlace(block);
+				if (block == null) {
+					return;
+				}
+				if (plugin.methods.checkChest(block)) {
+					return;
+				}
+				Block lBlock = plugin.methods.findLarge(block);
+				block.setType(Material.CHEST);
+				BlockState state = block.getState();
+				if (!(state instanceof Chest)) {
+					return;
+				}
+				Chest sChest = (Chest) state;
+				Chest lChest = null;
+				int slot = 0;
+				int maxSlot = sChest.getInventory().getSize();
+				if (items.size() > maxSlot) {
+					if (lBlock != null) {
+						lBlock.setType(Material.CHEST);
+						lChest = (Chest) lBlock.getState();
+						maxSlot = maxSlot * 2;
+					}
+				}
+				Block sBlock = null;
+				sBlock = sChest.getWorld().getBlockAt(sChest.getX(),
+						sChest.getY() + 1, sChest.getZ());
+				if (plugin.methods.canReplace(sBlock.getType())) {
+					plugin.methods.createSign(sBlock, player);
+				} else if (lChest != null) {
+					sBlock = lChest.getWorld().getBlockAt(lChest.getX(),
+							lChest.getY() + 1, lChest.getZ());
+					if (plugin.methods.canReplace(sBlock.getType())) {
+						plugin.methods.createSign(sBlock, player);
+					}
+				}
+				TombStone tBlock = new TombStone(sChest.getBlock(), sBlock);
+				plugin.methods.registerLWC(player, tBlock, b);
+				if (Variables.announce && !b) {
+					plugin.methods.advertiseDeath(player.getName(), tBlock
+							.getBlock().getWorld().getName(), tBlock.getBlock()
+							.getX(), tBlock.getBlock().getY(), tBlock
+							.getBlock().getZ());
+				}
+				for (Iterator<ItemStack> iter = items.listIterator(); iter
+						.hasNext();) {
+					ItemStack item = iter.next();
+					if (item == null)
+						continue;
+					if (slot < maxSlot) {
+						if (slot >= sChest.getInventory().getSize()) {
+							if (lChest == null)
+								continue;
+							lChest.getInventory().setItem(
+									slot % sChest.getInventory().getSize(),
+									item);
+						} else {
+							sChest.getInventory().setItem(slot, item);
+						}
+						iter.remove();
+						slot++;
+					}
+				}
+			}
+			timer.put(
+					player,
+					new Timer(
+							String.valueOf(Variables.hours).length() > 1 ? 0 + Variables.hours
+									: Variables.hours
+											+ String.valueOf(Variables.mins)
+													.length() > 1 ? 0 + Variables.mins
+											: Variables.mins
+													+ String.valueOf(
+															Variables.secs)
+															.length() > 1 ? 0 + Variables.secs
+													: Variables.secs + 000));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -7,24 +7,24 @@ import org.monstercraft.deathexplosion.util.Variables;
 
 import com.iCo6.system.Account;
 
-public class Pay extends Command {
+public class PrivateChest extends Command {
 
-	public Pay(DeathExplosion plugin) {
+	public PrivateChest(DeathExplosion plugin) {
 		super(plugin);
 	}
 
 	@Override
 	public boolean canExecute(CommandSender sender, String[] split) {
-		return split[0].equalsIgnoreCase("boom")
+		return split[0].equalsIgnoreCase("tomb")
 				&& split[1].equalsIgnoreCase("pay");
 	}
 
 	@Override
 	public boolean execute(CommandSender sender, String[] split) {
 		Account a = new Account(sender.getName());
-		if (split[2].length() > String.valueOf(Variables.cost).length()) {
+		if (split[2].length() > String.valueOf(Variables.pcost).length()) {
 			sender.sendMessage("You are paying more than enough, the limit is "
-					+ Variables.cost + ".");
+					+ Variables.pcost + ".");
 			return false;
 		}
 		if (!checkIfNumber(split[2])) {
@@ -35,16 +35,16 @@ public class Pay extends Command {
 			split[2] = split[2].replace("-", "");
 		}
 		if (a.getHoldings().hasOver(Integer.valueOf(split[2]))) {
-			if (!plugin.map.containsKey(sender.getName())) {
-				if (Integer.valueOf(split[2]) <= Variables.cost) {
+			if (!plugin.pchest.containsKey(sender.getName())) {
+				if (Integer.valueOf(split[2]) <= Variables.pcost) {
 					a.getHoldings().subtract(Integer.valueOf(split[2]));
-					plugin.map.put(sender.getName(), Integer.valueOf(split[2]));
+					plugin.pchest.put(sender.getName(), Integer.valueOf(split[2]));
 					sender.sendMessage("Thanks for paying: "
 							+ Integer.valueOf(split[2]) + ".");
 					return true;
 				} else {
 					sender.sendMessage("You are paying more than enough, the limit is "
-							+ Variables.cost + ".");
+							+ Variables.pcost + ".");
 				}
 			} else {
 				sender.sendMessage("You have already payed. Go die.");

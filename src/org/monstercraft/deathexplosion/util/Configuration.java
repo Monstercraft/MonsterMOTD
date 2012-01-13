@@ -19,6 +19,10 @@ public class Configuration {
 			config.set("TOMB.ENABLED", Variables.chest);
 			config.set("TOMB.COLOR", Variables.colorCode);
 			config.set("TOMB.ANNOUNCE_DEATH", Variables.announce);
+			config.set("TOMB.PRIVATE.COST", Variables.pcost);
+			config.set("TOMB.TIME.SEC", Variables.secs);
+			config.set("TOMB.TIME.MIN", Variables.mins);
+			config.set("TOMB.TIME.HOUR", Variables.hours);
 			config.set("EXPLOSION.COST", Variables.cost);
 			config.set("EXPLOSION.SIZE", Variables.size);
 			config.save(new File(Constants.SETTINGS_PATH + Constants.SETTINGS_FILE));
@@ -40,6 +44,10 @@ public class Configuration {
 				Variables.announce = config.getBoolean("TOMB.ANNOUNCE_DEATH");
 				Variables.cost = config.getInt("EXPLOSION.COST");
 				Variables.size = config.getInt("EXPLOSION.SIZE");
+				Variables.pcost = config.getInt("TOMB.PRIVATE.COST");
+				Variables.secs = config.getInt("TOMB.TIME.SEC");
+				Variables.mins = config.getInt("TOMB.TIME.MIN");
+				Variables.hours = config.getInt("TOMB.TIME.HOUR");
 			} catch (Exception e) {
 				saveConfig();
 				e.printStackTrace();

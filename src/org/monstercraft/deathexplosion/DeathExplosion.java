@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
@@ -14,11 +16,14 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.monstercraft.deathexplosion.command.commands.Pay;
+import org.monstercraft.deathexplosion.command.commands.PrivateChest;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionEntityListener;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionPlayerListener;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionServerListener;
 import org.monstercraft.deathexplosion.util.Configuration;
 import org.monstercraft.deathexplosion.util.Methods;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class DeathExplosion extends JavaPlugin {
 
@@ -28,6 +33,7 @@ public class DeathExplosion extends JavaPlugin {
 	Logger log = Logger.getLogger("Minecraft");
 	public List<org.monstercraft.deathexplosion.command.Command> commands;
 	public HashMap<String, Integer> map;
+	public HashMap<String, Integer> pchest;
 	public Configuration config;
 	public Methods methods;
 
@@ -37,6 +43,7 @@ public class DeathExplosion extends JavaPlugin {
 		config = new Configuration(this);
 		methods = new Methods(this);
 		map = new HashMap<String, Integer>();
+		pchest = new HashMap<String, Integer>();
 		registerListeners();
 		registerCommands();
 		log.info("DeathExplosion has been enabled!");
@@ -49,6 +56,7 @@ public class DeathExplosion extends JavaPlugin {
 
 	private void registerCommands() {
 		commands.add(new Pay(this));
+		commands.add(new PrivateChest(this));
 	}
 
 	@Override
@@ -78,6 +86,8 @@ public class DeathExplosion extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener,
 				Event.Priority.Highest, this);
+		pm.registerEvent(Event.Type.ENTITY_EXPLODE, entityListener,
+				Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener,
 				Event.Priority.Normal, this);
 		pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Normal,
@@ -96,5 +106,29 @@ public class DeathExplosion extends JavaPlugin {
 			return plugin;
 		}
 		return null;
+	}
+
+	public WorldGuardPlugin getWorldGuard() {
+		Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+
+		if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+			return null; 
+		}
+		if (!plugin.isEnabled()) {
+			return null;
+		}
+		return (WorldGuardPlugin) plugin;
+	}
+
+	public PreciousStones getPStones() {
+		Plugin plugin = getServer().getPluginManager().getPlugin(
+				"PreciousStones");
+		if (plugin == null || !(plugin instanceof PreciousStones)) {
+			return null;
+		}
+		if (!plugin.isEnabled()) {
+			return null;
+		}
+		return (PreciousStones) plugin;
 	}
 }
