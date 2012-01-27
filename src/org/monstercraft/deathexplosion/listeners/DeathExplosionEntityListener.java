@@ -25,16 +25,16 @@ public class DeathExplosionEntityListener extends EntityListener {
 
 	private Random ran = new Random();
 	private DeathExplosion plugin;
-	private HashSet<Location> explosions = new HashSet<Location>();
+	private HashSet<Location> locations;
 
 	public DeathExplosionEntityListener(DeathExplosion plugin) {
 		this.plugin = plugin;
+		locations = new HashSet<Location>();
 	}
 
 	@Override
 	public void onEntityDeath(EntityDeathEvent event) {
 		int i = ran.nextInt(Variables.cost);
-		int i2 = ran.nextInt(Variables.pcost);
 		Entity entity = event.getEntity();
 		EntityDamageEvent cause = event.getEntity().getLastDamageCause();
 		if (!(entity instanceof Player)) {
@@ -62,109 +62,46 @@ public class DeathExplosionEntityListener extends EntityListener {
 							FieldFlag.PREVENT_DESTROY)) {
 				return;
 			}
-		} else {
-			System.out.println("pstones null");
 		}
 		if (plugin.map.containsKey(player.getName())) {
-			if (plugin.pchest.containsKey(player)) {
-				if (i <= plugin.map.get(player.getName())) {
-					World world = player.getWorld();
-					world.createExplosion(loc, Variables.size, false);
-					explosions.add(loc);
-					player.sendMessage("You have exploded.");
-					if (i2 <= plugin.pchest.get(player.getName())) {
-						plugin.methods
-								.saveItems(player, event.getDrops(), true);
-						plugin.pchest.remove(player.getName());
-						plugin.map.remove(player.getName());
-						player.sendMessage("Your items have been stored in a private chest where you died!");
-					} else {
-						plugin.methods.saveItems(player, event.getDrops(),
-								false);
-						plugin.pchest.remove(player.getName());
-						plugin.map.remove(player.getName());
-						player.sendMessage("Your items were not stored in a private chest.");
-					}
-				} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-					if (i2 <= plugin.pchest.get(player.getName())) {
-						plugin.methods
-								.saveItems(player, event.getDrops(), true);
-						plugin.pchest.remove(player.getName());
-						plugin.map.remove(player.getName());
-						player.sendMessage("Your items have been stored in a private chest where you died!");
-					} else {
-						plugin.methods.saveItems(player, event.getDrops(),
-								false);
-						plugin.pchest.remove(player.getName());
-						plugin.map.remove(player.getName());
-						player.sendMessage("Your items were not stored in a private chest.");
-					}
-					player.sendMessage("You have died from someone elses explosion");
-					player.sendMessage("We are sorry, you didn't explode upon death.");
-				} else {
-					plugin.map.remove(player.getName());
-					player.sendMessage("We are sorry, you didn't explode upon death.");
-				}
+			if (i <= plugin.map.get(player.getName())) {
+				World world = player.getWorld();
+				world.createExplosion(loc, Variables.size);
+				locations.add(loc);
+				player.sendMessage("You have exploded.");
+				plugin.methods.saveItems(player, event.getDrops());
+				plugin.map.remove(player.getName());
+			} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
+				plugin.methods.saveItems(player, event.getDrops());
+				player.sendMessage("You have died from someone elses explosion");
+				player.sendMessage("We are sorry, you didn't explode upon death.");
+				plugin.map.remove(player.getName());
 			} else {
-				if (i <= plugin.map.get(player.getName())) {
-					World world = player.getWorld();
-					world.createExplosion(loc, Variables.size, false);
-					explosions.add(loc);
-					player.sendMessage("You have exploded.");
-					plugin.methods.saveItems(player, event.getDrops(), false);
-					plugin.map.remove(player.getName());
-				} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-					plugin.methods.saveItems(player, event.getDrops(), false);
-					player.sendMessage("You have died from someone elses explosion");
-					player.sendMessage("We are sorry, you didn't explode upon death.");
-					plugin.map.remove(player.getName());
-				} else {
-					player.sendMessage("We are sorry, you didn't explode upon death.");
-					plugin.map.remove(player.getName());
-				}
+				player.sendMessage("We are sorry, you didn't explode upon death.");
+				plugin.map.remove(player.getName());
 			}
-		} else if (plugin.pchest.containsKey(player)) {
-			if (i2 <= plugin.pchest.get(player.getName())) {
-				plugin.methods.saveItems(player, event.getDrops(), true);
-				plugin.pchest.remove(player.getName());
-				player.sendMessage("Your items have been stored in a private chest where you died!");
-			} else {
-				plugin.methods.saveItems(player, event.getDrops(), false);
-				plugin.pchest.remove(player.getName());
-				player.sendMessage("Your items were not stored in a private chest.");
-			}
-			player.sendMessage("We are sorry, you didn't explode upon death.");
 		} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-			plugin.methods.saveItems(player, event.getDrops(), false);
+			plugin.methods.saveItems(player, event.getDrops());
 			player.sendMessage("You have died from someone elses explosion");
 		}
 	}
 
 	@Override
 	public void onEntityExplode(EntityExplodeEvent event) {
-		if (!explosions.contains(event.getLocation())) {
-			return;
+		if (locations.contains(event.getLocation())) {
+			final List<BlockData> revert = new LinkedList<BlockData>();
+			List<Block> blocks = event.blockList();
+			for (Block block : blocks) {
+				revert.add(new BlockData(block));
+			}
+			if (!revert.isEmpty()) {
+				for (BlockData db : revert) {
+					Block block = db.getLocation().getBlock();
+					block.setTypeIdAndData(db.getTypeId(), db.getData(), true);
+				}
+				revert.clear();
+			}
+			locations.remove(event.getLocation());
 		}
-		final List<BlockData> revert = new LinkedList<BlockData>();
-		List<Block> blocks = event.blockList();
-		for (Block block : blocks) {
-			revert.add(new BlockData(block));
-			continue;
-		}
-		if (!revert.isEmpty()) {
-			plugin.getServer().getScheduler()
-					.scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							for (BlockData db : revert) {
-								Block block = db.getLocation().getBlock();
-								block.setTypeIdAndData(db.getTypeId(),
-										db.getData(), true);
-							}
-							revert.clear();
-						}
-					}, 3);
-		}
-		explosions.remove(event.getLocation());
-
 	}
 }

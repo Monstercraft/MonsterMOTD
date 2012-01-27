@@ -16,7 +16,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.monstercraft.deathexplosion.command.commands.Pay;
-import org.monstercraft.deathexplosion.command.commands.PrivateChest;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionEntityListener;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionPlayerListener;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionServerListener;
@@ -33,7 +32,6 @@ public class DeathExplosion extends JavaPlugin {
 	Logger log = Logger.getLogger("Minecraft");
 	public List<org.monstercraft.deathexplosion.command.Command> commands;
 	public HashMap<String, Integer> map;
-	public HashMap<String, Integer> pchest;
 	public Configuration config;
 	public Methods methods;
 
@@ -43,7 +41,6 @@ public class DeathExplosion extends JavaPlugin {
 		config = new Configuration(this);
 		methods = new Methods(this);
 		map = new HashMap<String, Integer>();
-		pchest = new HashMap<String, Integer>();
 		registerListeners();
 		registerCommands();
 		log.info("DeathExplosion has been enabled!");
@@ -56,7 +53,6 @@ public class DeathExplosion extends JavaPlugin {
 
 	private void registerCommands() {
 		commands.add(new Pay(this));
-		commands.add(new PrivateChest(this));
 	}
 
 	@Override

@@ -5,6 +5,3 @@ commands:
   boom:
     description: boom
     usage: /<command> [msg]
-  tomb:
-    description: tomb
-    usage: /<command> [msg]

@@ -22,13 +22,13 @@ public class Pay extends Command {
 	@Override
 	public boolean execute(CommandSender sender, String[] split) {
 		Account a = new Account(sender.getName());
+		if (!checkIfNumber(split[2])) {
+			sender.sendMessage("Make sure to only use numbers!");
+			return false;
+		}
 		if (split[2].length() > String.valueOf(Variables.cost).length()) {
 			sender.sendMessage("You are paying more than enough, the limit is "
 					+ Variables.cost + ".");
-			return false;
-		}
-		if (!checkIfNumber(split[2])) {
-			sender.sendMessage("Make sure to only use numbers!");
 			return false;
 		}
 		if (split[2].contains("-")) {
