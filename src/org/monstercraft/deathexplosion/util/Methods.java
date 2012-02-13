@@ -19,6 +19,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.util.wrappers.TombStone;
 
@@ -35,6 +36,19 @@ public class Methods {
 		this.plugin = plugin;
 	}
 
+	public Plugin getPlugin(String name) {
+		Plugin plugin = this.plugin.getServer().getPluginManager()
+				.getPlugin(name);
+		return getPlugin(plugin);
+	}
+
+	public Plugin getPlugin(Plugin plugin) {
+		if (plugin != null && plugin.isEnabled()) {
+			return plugin;
+		}
+		return null;
+	}
+
 	public void advertiseDeath(String name, String world, double x, double y,
 			double z) {
 		try {
@@ -48,7 +62,7 @@ public class Methods {
 	}
 
 	public void removeLWC(Player player, TombStone tBlock) {
-		LWC lwc = ((LWCPlugin) plugin.getPlugin("LWC")).getLWC();
+		LWC lwc = ((LWCPlugin) getPlugin("LWC")).getLWC();
 		if (lwc != null) {
 			Block block = tBlock.getBlock();
 			Block sblock = block.getWorld().getBlockAt(block.getX(),
@@ -68,7 +82,7 @@ public class Methods {
 	}
 
 	public void registerLWC(Player player, TombStone tBlock) {
-		LWC lwc = ((LWCPlugin) plugin.getPlugin("LWC")).getLWC();
+		LWC lwc = ((LWCPlugin) getPlugin("LWC")).getLWC();
 		if (lwc != null) {
 			Block block = tBlock.getBlock();
 			lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
@@ -236,14 +250,14 @@ public class Methods {
 				block = player.getWorld().getBlockAt(loc.getBlockX(),
 						loc.getBlockY() + 1, loc.getBlockZ());
 			}
-			block = plugin.methods.findPlace(block);
+			block = findPlace(block);
 			if (block == null) {
 				return;
 			}
-			if (plugin.methods.checkChest(block)) {
+			if (checkChest(block)) {
 				return;
 			}
-			Block lBlock = plugin.methods.findLarge(block);
+			Block lBlock = findLarge(block);
 			block.setType(Material.CHEST);
 			BlockState state = block.getState();
 			if (!(state instanceof Chest)) {
@@ -263,22 +277,21 @@ public class Methods {
 			Block sBlock = null;
 			sBlock = sChest.getWorld().getBlockAt(sChest.getX(),
 					sChest.getY() + 1, sChest.getZ());
-			if (plugin.methods.canReplace(sBlock.getType())) {
-				plugin.methods.createSign(sBlock, player);
+			if (canReplace(sBlock.getType())) {
+				createSign(sBlock, player);
 			} else if (lChest != null) {
 				sBlock = lChest.getWorld().getBlockAt(lChest.getX(),
 						lChest.getY() + 1, lChest.getZ());
-				if (plugin.methods.canReplace(sBlock.getType())) {
-					plugin.methods.createSign(sBlock, player);
+				if (canReplace(sBlock.getType())) {
+					createSign(sBlock, player);
 				}
 			}
 			TombStone tBlock = new TombStone(sChest.getBlock(), sBlock);
-			plugin.methods.registerLWC(player, tBlock);
+			registerLWC(player, tBlock);
 			if (Variables.announce) {
-				plugin.methods.advertiseDeath(player.getName(), tBlock
-						.getBlock().getWorld().getName(), tBlock.getBlock()
-						.getX(), tBlock.getBlock().getY(), tBlock.getBlock()
-						.getZ());
+				advertiseDeath(player.getName(), tBlock.getBlock().getWorld()
+						.getName(), tBlock.getBlock().getX(), tBlock.getBlock()
+						.getY(), tBlock.getBlock().getZ());
 			}
 			for (Iterator<ItemStack> iter = items.listIterator(); iter
 					.hasNext();) {

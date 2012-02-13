@@ -2,12 +2,10 @@ package org.monstercraft.deathexplosion.command.commands;
 
 import org.bukkit.command.CommandSender;
 import org.monstercraft.deathexplosion.DeathExplosion;
-import org.monstercraft.deathexplosion.command.Command;
+import org.monstercraft.deathexplosion.command.GameCommand;
 import org.monstercraft.deathexplosion.util.Variables;
 
-import com.iCo6.system.Account;
-
-public class Pay extends Command {
+public class Pay extends GameCommand {
 
 	public Pay(DeathExplosion plugin) {
 		super(plugin);
@@ -21,36 +19,47 @@ public class Pay extends Command {
 
 	@Override
 	public boolean execute(CommandSender sender, String[] split) {
-		Account a = new Account(sender.getName());
-		if (!checkIfNumber(split[2])) {
-			sender.sendMessage("Make sure to only use numbers!");
-			return false;
-		}
-		if (split[2].length() > String.valueOf(Variables.cost).length()) {
-			sender.sendMessage("You are paying more than enough, the limit is "
-					+ Variables.cost + ".");
-			return false;
-		}
-		if (split[2].contains("-")) {
-			split[2] = split[2].replace("-", "");
-		}
-		if (a.getHoldings().hasOver(Integer.valueOf(split[2]))) {
-			if (!plugin.map.containsKey(sender.getName())) {
-				if (Integer.valueOf(split[2]) <= Variables.cost) {
-					a.getHoldings().subtract(Integer.valueOf(split[2]));
-					plugin.map.put(sender.getName(), Integer.valueOf(split[2]));
-					sender.sendMessage("Thanks for paying: "
-							+ Integer.valueOf(split[2]) + ".");
-					return true;
+		try {
+			if (!checkIfNumber(split[2])) {
+				sender.sendMessage("Make sure to only use numbers!");
+				return false;
+			}
+			if (split[2].length() > String.valueOf(Variables.cost).length()) {
+				sender.sendMessage("You are paying more than enough, the limit is "
+						+ Variables.cost + ".");
+				return false;
+			}
+			if (split[2].contains("-")) {
+				split[2] = split[2].replace("-", "");
+			}
+			if (plugin.getHookManager().getPermissionsHook().getHook()
+					.getBalance(sender.getName()) > Double
+					.parseDouble(split[2])) {
+				if (!Variables.map.containsKey(sender.getName())) {
+					if (Integer.valueOf(split[2]) <= Variables.cost) {
+						plugin.getHookManager()
+								.getPermissionsHook()
+								.getHook()
+								.withdrawPlayer(sender.getName(),
+										Double.parseDouble(split[2]));
+						Variables.map.put(sender.getName(),
+								Double.parseDouble(split[2]));
+						sender.sendMessage("Thanks for paying: "
+								+ Double.valueOf(split[2]) + ".");
+						return true;
+					} else {
+						sender.sendMessage("You are paying more than enough, the limit is "
+								+ Variables.cost + ".");
+					}
 				} else {
-					sender.sendMessage("You are paying more than enough, the limit is "
-							+ Variables.cost + ".");
+					sender.sendMessage("You have already payed. Go die.");
 				}
 			} else {
-				sender.sendMessage("You have already payed. Go die.");
+				sender.sendMessage("You don't have enough money to pay that much.");
 			}
-		} else {
-			sender.sendMessage("You don't have enough money to pay that much.");
+			return false;
+		} catch (Exception e) {
+			debug(e);
 		}
 		return false;
 	}
@@ -58,7 +67,7 @@ public class Pay extends Command {
 	public boolean checkIfNumber(String in) {
 		try {
 
-			Integer.parseInt(in);
+			Double.parseDouble(in);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
 			return false;

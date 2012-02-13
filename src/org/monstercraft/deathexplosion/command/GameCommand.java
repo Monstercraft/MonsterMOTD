@@ -3,11 +3,11 @@ package org.monstercraft.deathexplosion.command;
 import org.bukkit.command.CommandSender;
 import org.monstercraft.deathexplosion.DeathExplosion;
 
-public abstract class Command extends DeathExplosion {
+public abstract class GameCommand extends DeathExplosion {
 	
 	protected DeathExplosion plugin;
 	
-	public Command(DeathExplosion plugin) {
+	public GameCommand(DeathExplosion plugin) {
 		this.plugin = plugin;
 	}
 
