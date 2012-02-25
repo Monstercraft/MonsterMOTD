@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.command.GameCommand;
 import org.monstercraft.deathexplosion.command.commands.Pay;
+import org.monstercraft.deathexplosion.command.commands.off;
+import org.monstercraft.deathexplosion.command.commands.on;
 
 /**
  * This class manages all of the plugins commands.
@@ -26,6 +28,8 @@ public class CommandManager extends DeathExplosion {
 	 */
 	public CommandManager(DeathExplosion plugin) {
 		gameCommands.add(new Pay(plugin));
+		gameCommands.add(new on(plugin));
+		gameCommands.add(new off(plugin));
 	}
 
 	/**

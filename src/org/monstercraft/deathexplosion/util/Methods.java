@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -30,19 +31,17 @@ import com.griefcraft.model.ProtectionTypes;
 public class Methods {
 
 	private DeathExplosion plugin;
-	public HashMap<Player, TombStone> blocks = new HashMap<Player, TombStone>();
 
 	public Methods(DeathExplosion plugin) {
 		this.plugin = plugin;
 	}
 
-	public Plugin getPlugin(String name) {
-		Plugin plugin = this.plugin.getServer().getPluginManager()
-				.getPlugin(name);
+	public static Plugin getPlugin(String name) {
+		Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(name);
 		return getPlugin(plugin);
 	}
 
-	public Plugin getPlugin(Plugin plugin) {
+	public static Plugin getPlugin(Plugin plugin) {
 		if (plugin != null && plugin.isEnabled()) {
 			return plugin;
 		}
@@ -61,24 +60,14 @@ public class Methods {
 		}
 	}
 
-	public void removeLWC(Player player, TombStone tBlock) {
+	public static void removeLWC(Block block) {
 		LWC lwc = ((LWCPlugin) getPlugin("LWC")).getLWC();
 		if (lwc != null) {
-			Block block = tBlock.getBlock();
-			Block sblock = block.getWorld().getBlockAt(block.getX(),
-					block.getY() + 1, block.getZ());
 			lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
-					ProtectionTypes.PUBLIC, block.getWorld().getName(),
-					player.getName(), "", block.getX(), block.getY(),
-					block.getZ());
-			lwc.getPhysicalDatabase().registerProtection(sblock.getTypeId(),
-					ProtectionTypes.PUBLIC, sblock.getWorld().getName(), "",
-					"", sblock.getX(), sblock.getY(), sblock.getZ());
-			block.setTypeId(0);
-			sblock.setTypeId(0);
+					ProtectionTypes.PUBLIC, block.getWorld().getName(), "", "",
+					block.getX(), block.getY(), block.getZ());
 
 		}
-		blocks.remove(player);
 	}
 
 	public void registerLWC(Player player, TombStone tBlock) {
@@ -90,7 +79,6 @@ public class Methods {
 					player.getName(), "", block.getX(), block.getY(),
 					block.getZ());
 		}
-		blocks.put(player, tBlock);
 	}
 
 	public double getYawTo(Location from, Location to) {
@@ -233,7 +221,7 @@ public class Methods {
 				|| mat == Material.CROPS || mat == Material.SNOW || mat == Material.SUGAR_CANE);
 	}
 
-	public void saveItems(Player player, List<ItemStack> items) {
+	public Block saveItems(Player player, List<ItemStack> items) {
 		try {
 			Location loc = player.getLocation();
 			Block block = player.getWorld().getBlockAt(loc.getBlockX(),
@@ -252,16 +240,16 @@ public class Methods {
 			}
 			block = findPlace(block);
 			if (block == null) {
-				return;
+				return null;
 			}
 			if (checkChest(block)) {
-				return;
+				return null;
 			}
 			Block lBlock = findLarge(block);
 			block.setType(Material.CHEST);
 			BlockState state = block.getState();
 			if (!(state instanceof Chest)) {
-				return;
+				return null;
 			}
 			Chest sChest = (Chest) state;
 			Chest lChest = null;
@@ -311,8 +299,10 @@ public class Methods {
 					slot++;
 				}
 			}
+			return tBlock.getBlock();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

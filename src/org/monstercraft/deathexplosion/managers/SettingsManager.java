@@ -65,6 +65,8 @@ public class SettingsManager extends DeathExplosion {
 					Variables.cost);
 			Variables.size = config.getInt("BOOM.EXPLOSION.SIZE",
 					Variables.size);
+			Variables.time = config.getInt("BOOM.EXPLOSION.TIME_TO_REMOVE",
+					Variables.time);
 			save(config, CONFIGURATION_FILE);
 		} catch (Exception e) {
 			debug(e);

@@ -1,15 +1,21 @@
 package org.monstercraft.deathexplosion;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.monstercraft.deathexplosion.hooks.StatusHook;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionListener;
 import org.monstercraft.deathexplosion.managers.CommandManager;
 import org.monstercraft.deathexplosion.managers.HookManager;
 import org.monstercraft.deathexplosion.managers.SettingsManager;
+import org.monstercraft.deathexplosion.util.Methods;
+import org.monstercraft.deathexplosion.util.Timer;
 
 public class DeathExplosion extends JavaPlugin {
 
@@ -19,16 +25,43 @@ public class DeathExplosion extends JavaPlugin {
 	private static SettingsManager settings = null;
 	private static HookManager hooks = null;
 	private DeathExplosion plugin = null;
+	public static HashMap<Block, Timer> timedblocks = new HashMap<Block, Timer>();
+	private static StatusHook sch;
 
 	public void onEnable() {
 		plugin = this;
 		settings = new SettingsManager(plugin);
 		hooks = new HookManager(plugin);
+		sch = new StatusHook();
 		commandManager = new CommandManager(plugin);
 		listener = new DeathExplosionListener(plugin);
 		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+		Thread t = new Thread(timing);
+		t.setPriority(Thread.MAX_PRIORITY);
+		t.setDaemon(true);
+		t.start();
 		log("DeathExplosion has been enabled!");
 	}
+
+	private Runnable timing = new Runnable() {
+		public void run() {
+			while (true) {
+				for (Block b : timedblocks.keySet()) {
+					if (timedblocks.get(b).getRemaining() == 0) {
+						b.setType(Material.AIR);
+						Block b2 = b.getWorld().getBlockAt(
+								b.getLocation().getBlockX(),
+								b.getLocation().getBlockY() + 1,
+								b.getLocation().getBlockZ());
+						b2.setType(Material.AIR);
+						Methods.removeLWC(b);
+						Methods.removeLWC(b2);
+						timedblocks.remove(b);
+					}
+				}
+			}
+		}
+	};
 
 	public void onDisable() {
 		log("DeathExplosion has been disabled.");
@@ -45,7 +78,7 @@ public class DeathExplosion extends JavaPlugin {
 	 * @param msg
 	 *            The message to print.
 	 */
-	protected static void log(String msg) {
+	public static void log(String msg) {
 		logger.log(Level.INFO, "[Death Explosions] " + msg);
 	}
 
@@ -68,8 +101,12 @@ public class DeathExplosion extends JavaPlugin {
 	public HookManager getHookManager() {
 		return hooks;
 	}
-	
+
 	public CommandManager getCommandManager() {
 		return commandManager;
+	}
+
+	public static StatusHook getSCH() {
+		return sch;
 	}
 }

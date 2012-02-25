@@ -13,6 +13,10 @@ public class Variables {
 
 	public static int size = 15;
 
+	public static int time = 300000;
+
 	public static Map<String, Double> map = new HashMap<String, Double>();
+
+	public static boolean off = false;
 
 }
