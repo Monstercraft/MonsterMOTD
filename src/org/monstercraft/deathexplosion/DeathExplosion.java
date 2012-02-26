@@ -27,6 +27,7 @@ public class DeathExplosion extends JavaPlugin {
 	private DeathExplosion plugin = null;
 	public static HashMap<Block, Timer> timedblocks = new HashMap<Block, Timer>();
 	private static StatusHook sch;
+	public static Object blockLock = new Object();
 
 	public void onEnable() {
 		plugin = this;
@@ -46,17 +47,19 @@ public class DeathExplosion extends JavaPlugin {
 	private Runnable timing = new Runnable() {
 		public void run() {
 			while (true) {
-				for (Block b : timedblocks.keySet()) {
-					if (timedblocks.get(b).getRemaining() == 0) {
-						b.setType(Material.AIR);
-						Block b2 = b.getWorld().getBlockAt(
-								b.getLocation().getBlockX(),
-								b.getLocation().getBlockY() + 1,
-								b.getLocation().getBlockZ());
-						b2.setType(Material.AIR);
-						Methods.removeLWC(b);
-						Methods.removeLWC(b2);
-						timedblocks.remove(b);
+				synchronized (blockLock) {
+					for (Block b : timedblocks.keySet()) {
+						if (timedblocks.get(b).getRemaining() == 0) {
+							b.setType(Material.AIR);
+							Block b2 = b.getWorld().getBlockAt(
+									b.getLocation().getBlockX(),
+									b.getLocation().getBlockY() + 1,
+									b.getLocation().getBlockZ());
+							b2.setType(Material.AIR);
+							Methods.removeLWC(b);
+							Methods.removeLWC(b2);
+							timedblocks.remove(b);
+						}
 					}
 				}
 			}

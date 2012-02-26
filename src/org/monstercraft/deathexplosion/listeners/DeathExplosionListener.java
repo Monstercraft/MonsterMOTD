@@ -27,9 +27,6 @@ import org.monstercraft.deathexplosion.util.Methods;
 import org.monstercraft.deathexplosion.util.Timer;
 import org.monstercraft.deathexplosion.util.Variables;
 
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-
 public class DeathExplosionListener extends DeathExplosion implements Listener {
 
 	private DeathExplosion plugin;
@@ -105,14 +102,6 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 			return;
 		}
 		if (plugin.getHookManager().getWGHook() != null) {
-			RegionManager regionManager = plugin.getHookManager().getWGHook()
-					.getHook().getRegionManager(player.getWorld());
-			ApplicableRegionSet set = regionManager.getApplicableRegions(block
-					.getLocation());
-			// if (set.) {
-			// player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
-			// return;
-			// }
 			if (!plugin.getHookManager().getWGHook().getHook()
 					.canBuild(player, block)) {
 				player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
