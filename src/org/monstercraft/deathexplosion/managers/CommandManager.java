@@ -1,14 +1,14 @@
 package org.monstercraft.deathexplosion.managers;
 
-import java.util.HashSet;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.command.GameCommand;
-import org.monstercraft.deathexplosion.command.commands.Pay;
 import org.monstercraft.deathexplosion.command.commands.off;
 import org.monstercraft.deathexplosion.command.commands.on;
+import org.monstercraft.deathexplosion.command.commands.pay;
 
 /**
  * This class manages all of the plugins commands.
@@ -16,20 +16,18 @@ import org.monstercraft.deathexplosion.command.commands.on;
  * @author fletch_to_99 <fletchto99@hotmail.com>
  * 
  */
-public class CommandManager extends DeathExplosion {
+public class CommandManager {
 
-	private HashSet<GameCommand> gameCommands = new HashSet<GameCommand>();;
+	private Hashtable<Integer, GameCommand> gameCommands = new Hashtable<Integer, GameCommand>();
 
-	/**
-	 * Creates an instance
-	 * 
-	 * @param plugin
-	 *            The parent plugin.
-	 */
-	public CommandManager(DeathExplosion plugin) {
-		gameCommands.add(new Pay(plugin));
-		gameCommands.add(new on(plugin));
-		gameCommands.add(new off(plugin));
+	public CommandManager() {
+		try {
+			gameCommands.put(2, new pay());
+			gameCommands.put(1, new on());
+			gameCommands.put(0, new off());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -53,17 +51,19 @@ public class CommandManager extends DeathExplosion {
 			for (int a = 0; a < args.length; a++) {
 				split[a + 1] = args[a];
 			}
-			for (GameCommand c : gameCommands) {
+			for (Enumeration<Integer> e = gameCommands.keys(); e
+					.hasMoreElements();) {
+				int key = e.nextElement();
+				GameCommand c = gameCommands.get(key);
 				if (c.canExecute(sender, split)) {
 					try {
 						c.execute(sender, split);
-					} catch (Exception e) {
-						debug(e);
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
-					return true;
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 }

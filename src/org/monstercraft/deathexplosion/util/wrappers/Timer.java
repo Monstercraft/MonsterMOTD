@@ -1,4 +1,4 @@
-package org.monstercraft.deathexplosion.util;
+package org.monstercraft.deathexplosion.util.wrappers;
 
 /**
  * Timer

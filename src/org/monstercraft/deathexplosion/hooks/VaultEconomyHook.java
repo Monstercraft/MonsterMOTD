@@ -43,8 +43,7 @@ public class VaultEconomyHook extends DeathExplosion {
 	}
 
 	private Boolean setupPermissions() {
-		RegisteredServiceProvider<Economy> economyProvider = plugin
-				.getServer()
+		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer()
 				.getServicesManager()
 				.getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null) {

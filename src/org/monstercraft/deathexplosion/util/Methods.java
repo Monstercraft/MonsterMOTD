@@ -13,20 +13,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.util.wrappers.TombStone;
-
-import com.griefcraft.lwc.LWC;
-import com.griefcraft.lwc.LWCPlugin;
-import com.griefcraft.model.ProtectionTypes;
 
 public class Methods {
 
@@ -57,27 +51,6 @@ public class Methods {
 							+ y + " Z:" + z);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	public static void removeLWC(Block block) {
-		LWC lwc = ((LWCPlugin) getPlugin("LWC")).getLWC();
-		if (lwc != null) {
-			lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
-					ProtectionTypes.PUBLIC, block.getWorld().getName(), "", "",
-					block.getX(), block.getY(), block.getZ());
-
-		}
-	}
-
-	public void registerLWC(Player player, TombStone tBlock) {
-		LWC lwc = ((LWCPlugin) getPlugin("LWC")).getLWC();
-		if (lwc != null) {
-			Block block = tBlock.getBlock();
-			lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
-					ProtectionTypes.PUBLIC, block.getWorld().getName(),
-					player.getName(), "", block.getX(), block.getY(),
-					block.getZ());
 		}
 	}
 
@@ -127,25 +100,6 @@ public class Methods {
 		}
 		matcher.appendTail(sb);
 		return sb.toString();
-	}
-
-	public boolean canBuild(Block b, Player p) {
-		int spawnSize = p.getServer().getSpawnRadius();
-		Location spawn = p.getWorld().getSpawnLocation();
-		if (spawnSize > 0) {
-			int distanceFromSpawn = (int) Math.max(
-					Math.abs(p.getLocation().getBlockX() - spawn.getBlockX()),
-					Math.abs(p.getLocation().getBlockZ() - spawn.getBlockZ()));
-			if (distanceFromSpawn <= spawnSize)
-				return false;
-		}
-		BlockPlaceEvent event = new BlockPlaceEvent(b, b.getState(),
-				b.getRelative(BlockFace.DOWN), p.getItemInHand(), p, true);
-		plugin.getServer().getPluginManager().callEvent(event);
-		if (event.isCancelled()) {
-			return false;
-		}
-		return true;
 	}
 
 	public Block findPlace(Block base) {
@@ -275,7 +229,6 @@ public class Methods {
 				}
 			}
 			TombStone tBlock = new TombStone(sChest.getBlock(), sBlock);
-			registerLWC(player, tBlock);
 			if (Variables.announce) {
 				advertiseDeath(player.getName(), tBlock.getBlock().getWorld()
 						.getName(), tBlock.getBlock().getX(), tBlock.getBlock()

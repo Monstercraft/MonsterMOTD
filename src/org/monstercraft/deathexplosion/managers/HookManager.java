@@ -37,7 +37,7 @@ public class HookManager {
 	public VaultEconomyHook getPermissionsHook() {
 		return economy;
 	}
-	
+
 	/**
 	 * Fetches the Permissions hook.
 	 * 
@@ -46,7 +46,7 @@ public class HookManager {
 	public PreciousStonesHook getPSHook() {
 		return ps;
 	}
-	
+
 	/**
 	 * Fetches the Permissions hook.
 	 * 
@@ -66,7 +66,7 @@ public class HookManager {
 	public VaultEconomyHook setPermissionsHook(final VaultEconomyHook hook) {
 		return economy = hook;
 	}
-	
+
 	/**
 	 * Creates a new hook into the plugin.
 	 * 
@@ -77,7 +77,7 @@ public class HookManager {
 	public PreciousStonesHook setPSHook(final PreciousStonesHook hook) {
 		return ps = hook;
 	}
-	
+
 	/**
 	 * Creates a new hook into the plugin.
 	 * 

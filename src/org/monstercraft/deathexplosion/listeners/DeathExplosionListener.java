@@ -2,8 +2,6 @@ package org.monstercraft.deathexplosion.listeners;
 
 import java.util.Random;
 
-import net.sacredlabyrinth.Phaed.PreciousStones.FieldFlag;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -24,8 +22,8 @@ import org.monstercraft.deathexplosion.hooks.PreciousStonesHook;
 import org.monstercraft.deathexplosion.hooks.VaultEconomyHook;
 import org.monstercraft.deathexplosion.hooks.WorldGuardHook;
 import org.monstercraft.deathexplosion.util.Methods;
-import org.monstercraft.deathexplosion.util.Timer;
 import org.monstercraft.deathexplosion.util.Variables;
+import org.monstercraft.deathexplosion.util.wrappers.Timer;
 
 public class DeathExplosionListener extends DeathExplosion implements Listener {
 
@@ -97,48 +95,21 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 			player.sendMessage("The plugin is currently disabled");
 			return;
 		}
-		if (!methods.canBuild(block, player)) {
-			player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
-			return;
-		}
 		if (plugin.getHookManager().getWGHook() != null) {
 			if (!plugin.getHookManager().getWGHook().getHook()
 					.canBuild(player, block)) {
-				player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
+				player.sendMessage("You can't explode in this world guard area.");
+				DeathExplosion.getSCH().attachStatusBar(player);
 				return;
 			}
 		}
 		if (plugin.getHookManager().getPSHook() != null) {
 			if (plugin.getHookManager().getPSHook().getHook()
 					.getForceFieldManager().getField(block) != null) {
-				if (!plugin.getHookManager().getPSHook().getHook()
-						.getForceFieldManager().getField(block)
-						.hasFlag(FieldFlag.ALLOW_DESTROY)) {
-					player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
-					return;
-				}
-				if (!plugin.getHookManager().getPSHook().getHook()
-						.getForceFieldManager().getField(block)
-						.hasFlag(FieldFlag.ALLOW_PLACE)) {
-					player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
-					return;
-				}
-				if (!plugin.getHookManager().getPSHook().getHook()
-						.getForceFieldManager().getField(block)
-						.hasFlag(FieldFlag.BREAKABLE)) {
-					player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
-					return;
-				}
 				if (plugin.getHookManager().getPSHook().getHook()
-						.getForceFieldManager().getField(block)
-						.hasFlag(FieldFlag.PREVENT_DESTROY)) {
-					player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
-					return;
-				}
-				if (plugin.getHookManager().getPSHook().getHook()
-						.getForceFieldManager().getField(block)
-						.hasFlag(FieldFlag.PREVENT_TNT_EXPLOSIONS)) {
-					player.sendMessage("You can't explode here, your option to explode will carry on to your next death.");
+						.getForceFieldManager().getField(block) != null) {
+					player.sendMessage("You can't explode in this ps area.");
+					DeathExplosion.getSCH().attachStatusBar(player);
 					return;
 				}
 			}
@@ -149,12 +120,18 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 				world.createExplosion(loc, Variables.size);
 				player.sendMessage("You have exploded.");
 				Block b = methods.saveItems(player, event.getDrops());
-				DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
+				synchronized (DeathExplosion.timedblocks) {
+					DeathExplosion.timedblocks
+							.put(b, new Timer(Variables.time));
+				}
 				DeathExplosion.getSCH().removeStatusBar(player);
 				Variables.map.remove(player.getName());
 			} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
 				Block b = methods.saveItems(player, event.getDrops());
-				DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
+				synchronized (DeathExplosion.timedblocks) {
+					DeathExplosion.timedblocks
+							.put(b, new Timer(Variables.time));
+				}
 				player.sendMessage("You have died from someone elses explosion");
 				player.sendMessage("We are sorry, you didn't explode upon death.");
 				DeathExplosion.getSCH().removeStatusBar(player);
@@ -166,7 +143,9 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 			}
 		} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
 			Block b = methods.saveItems(player, event.getDrops());
-			DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
+			synchronized (DeathExplosion.timedblocks) {
+				DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
+			}
 			player.sendMessage("You have died from someone elses explosion");
 		}
 	}

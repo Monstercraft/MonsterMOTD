@@ -3,7 +3,7 @@ main: org.monstercraft.deathexplosion.DeathExplosion
 version: 1.0
 author: Fletch_to_99
 description: Players that pay have a chance of exploding on death.
-depend: [Vault, Spout]
+depend: [Vault]
 commands:
   boom:
     description: Use /boom pay (amount)

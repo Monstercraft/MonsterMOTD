@@ -7,11 +7,7 @@ import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.command.GameCommand;
 import org.monstercraft.deathexplosion.util.Variables;
 
-public class Pay extends GameCommand {
-
-	public Pay(DeathExplosion plugin) {
-		super(plugin);
-	}
+public class pay extends GameCommand {
 
 	@Override
 	public boolean canExecute(CommandSender sender, String[] split) {
@@ -42,12 +38,12 @@ public class Pay extends GameCommand {
 			if (split[2].contains("-")) {
 				split[2] = split[2].replace("-", "");
 			}
-			if (plugin.getHookManager().getPermissionsHook().getHook()
+			if (getHookManager().getPermissionsHook().getHook()
 					.getBalance(sender.getName()) > Double
 					.parseDouble(split[2])) {
 				if (!Variables.map.containsKey(sender.getName())) {
 					if (Integer.valueOf(split[2]) <= Variables.cost) {
-						plugin.getHookManager()
+						getHookManager()
 								.getPermissionsHook()
 								.getHook()
 								.withdrawPlayer(sender.getName(),
@@ -56,7 +52,8 @@ public class Pay extends GameCommand {
 								Double.parseDouble(split[2]));
 						sender.sendMessage("Thanks for paying: "
 								+ Double.valueOf(split[2]) + ".");
-						DeathExplosion.getSCH().attachStatusBar((Player) sender);
+						DeathExplosion.getSCH()
+								.attachStatusBar((Player) sender);
 						return true;
 					} else {
 						sender.sendMessage("You are paying more than enough, the limit is "

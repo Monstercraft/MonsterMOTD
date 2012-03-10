@@ -2,6 +2,7 @@ package org.monstercraft.deathexplosion.managers;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.util.Constants;

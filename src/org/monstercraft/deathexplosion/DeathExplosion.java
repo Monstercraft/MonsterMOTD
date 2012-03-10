@@ -14,29 +14,25 @@ import org.monstercraft.deathexplosion.listeners.DeathExplosionListener;
 import org.monstercraft.deathexplosion.managers.CommandManager;
 import org.monstercraft.deathexplosion.managers.HookManager;
 import org.monstercraft.deathexplosion.managers.SettingsManager;
-import org.monstercraft.deathexplosion.util.Methods;
-import org.monstercraft.deathexplosion.util.Timer;
+import org.monstercraft.deathexplosion.util.wrappers.Timer;
 
 public class DeathExplosion extends JavaPlugin {
 
-	private DeathExplosionListener listener = null;
+	private DeathExplosionListener listener;
 	private static Logger logger = Logger.getLogger("Minecraft");
-	private static CommandManager commandManager = null;
-	private static SettingsManager settings = null;
-	private static HookManager hooks = null;
-	private DeathExplosion plugin = null;
-	public static HashMap<Block, Timer> timedblocks = new HashMap<Block, Timer>();
+	private CommandManager commandManager;
+	private static SettingsManager settings;
+	private static HookManager hooks;
 	private static StatusHook sch;
-	public static Object blockLock = new Object();
+	public static HashMap<Block, Timer> timedblocks = new HashMap<Block, Timer>();
 
 	public void onEnable() {
-		plugin = this;
-		settings = new SettingsManager(plugin);
-		hooks = new HookManager(plugin);
+		settings = new SettingsManager(this);
+		hooks = new HookManager(this);
 		sch = new StatusHook();
-		commandManager = new CommandManager(plugin);
-		listener = new DeathExplosionListener(plugin);
-		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+		this.commandManager = new CommandManager();
+		listener = new DeathExplosionListener(this);
+		getServer().getPluginManager().registerEvents(listener, this);
 		Thread t = new Thread(timing);
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.setDaemon(true);
@@ -47,17 +43,10 @@ public class DeathExplosion extends JavaPlugin {
 	private Runnable timing = new Runnable() {
 		public void run() {
 			while (true) {
-				synchronized (blockLock) {
+				synchronized (timedblocks) {
 					for (Block b : timedblocks.keySet()) {
 						if (timedblocks.get(b).getRemaining() == 0) {
 							b.setType(Material.AIR);
-							Block b2 = b.getWorld().getBlockAt(
-									b.getLocation().getBlockX(),
-									b.getLocation().getBlockY() + 1,
-									b.getLocation().getBlockZ());
-							b2.setType(Material.AIR);
-							Methods.removeLWC(b);
-							Methods.removeLWC(b2);
 							timedblocks.remove(b);
 						}
 					}
@@ -72,7 +61,7 @@ public class DeathExplosion extends JavaPlugin {
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		return getCommandManager().onGameCommand(sender, command, label, args);
+		return commandManager.onGameCommand(sender, command, label, args);
 	}
 
 	/**
@@ -103,10 +92,6 @@ public class DeathExplosion extends JavaPlugin {
 
 	public HookManager getHookManager() {
 		return hooks;
-	}
-
-	public CommandManager getCommandManager() {
-		return commandManager;
 	}
 
 	public static StatusHook getSCH() {
