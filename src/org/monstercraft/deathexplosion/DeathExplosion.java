@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -33,22 +34,17 @@ public class DeathExplosion extends JavaPlugin {
 		this.commandManager = new CommandManager();
 		listener = new DeathExplosionListener(this);
 		getServer().getPluginManager().registerEvents(listener, this);
-		Thread t = new Thread(timing);
-		t.setPriority(Thread.MAX_PRIORITY);
-		t.setDaemon(true);
-		t.start();
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, timing, 0, 0);
 		log("DeathExplosion has been enabled!");
 	}
 
 	private Runnable timing = new Runnable() {
 		public void run() {
-			while (true) {
-				synchronized (timedblocks) {
-					for (Block b : timedblocks.keySet()) {
-						if (timedblocks.get(b).getRemaining() == 0) {
-							b.setType(Material.AIR);
-							timedblocks.remove(b);
-						}
+			synchronized (timedblocks) {
+				for (Block b : timedblocks.keySet()) {
+					if (timedblocks.get(b).getRemaining() == 0) {
+						b.setType(Material.AIR);
+						timedblocks.remove(b);
 					}
 				}
 			}
