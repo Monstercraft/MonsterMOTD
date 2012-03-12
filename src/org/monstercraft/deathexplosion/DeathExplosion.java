@@ -1,6 +1,6 @@
 package org.monstercraft.deathexplosion;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +25,7 @@ public class DeathExplosion extends JavaPlugin {
 	private static SettingsManager settings;
 	private static HookManager hooks;
 	private static StatusHook sch;
-	public static HashMap<Block, Timer> timedblocks = new HashMap<Block, Timer>();
+	public static Hashtable<Block, Timer> timedblocks = new Hashtable<Block, Timer>();
 
 	public void onEnable() {
 		settings = new SettingsManager(this);

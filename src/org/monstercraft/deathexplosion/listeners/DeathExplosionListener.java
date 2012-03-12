@@ -139,7 +139,6 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 										Variables.time));
 							}
 						});
-				DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
 				player.sendMessage("You have died from someone elses explosion");
 				player.sendMessage("We are sorry, you didn't explode upon death.");
 				DeathExplosion.getSCH().removeStatusBar(player);
