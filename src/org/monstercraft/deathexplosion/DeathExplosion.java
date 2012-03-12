@@ -34,18 +34,16 @@ public class DeathExplosion extends JavaPlugin {
 		this.commandManager = new CommandManager();
 		listener = new DeathExplosionListener(this);
 		getServer().getPluginManager().registerEvents(listener, this);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, timing, 0, 0);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, timing, 20, 200);
 		log("DeathExplosion has been enabled!");
 	}
 
 	private Runnable timing = new Runnable() {
 		public void run() {
-			synchronized (timedblocks) {
-				for (Block b : timedblocks.keySet()) {
-					if (timedblocks.get(b).getRemaining() == 0) {
-						b.setType(Material.AIR);
-						timedblocks.remove(b);
-					}
+			for (Block b : timedblocks.keySet()) {
+				if (timedblocks.get(b).getRemaining() == 0) {
+					b.setType(Material.AIR);
+					timedblocks.remove(b);
 				}
 			}
 		}

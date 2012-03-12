@@ -2,6 +2,7 @@ package org.monstercraft.deathexplosion.listeners;
 
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -119,19 +120,26 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 				World world = player.getWorld();
 				world.createExplosion(loc, Variables.size);
 				player.sendMessage("You have exploded.");
-				Block b = methods.saveItems(player, event.getDrops());
-				synchronized (DeathExplosion.timedblocks) {
-					DeathExplosion.timedblocks
-							.put(b, new Timer(Variables.time));
-				}
+				final Block b = methods.saveItems(player, event.getDrops());
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+						new Runnable() {
+							public void run() {
+								DeathExplosion.timedblocks.put(b, new Timer(
+										Variables.time));
+							}
+						});
 				DeathExplosion.getSCH().removeStatusBar(player);
 				Variables.map.remove(player.getName());
 			} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-				Block b = methods.saveItems(player, event.getDrops());
-				synchronized (DeathExplosion.timedblocks) {
-					DeathExplosion.timedblocks
-							.put(b, new Timer(Variables.time));
-				}
+				final Block b = methods.saveItems(player, event.getDrops());
+				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+						new Runnable() {
+							public void run() {
+								DeathExplosion.timedblocks.put(b, new Timer(
+										Variables.time));
+							}
+						});
+				DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
 				player.sendMessage("You have died from someone elses explosion");
 				player.sendMessage("We are sorry, you didn't explode upon death.");
 				DeathExplosion.getSCH().removeStatusBar(player);
@@ -142,10 +150,14 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 				Variables.map.remove(player.getName());
 			}
 		} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-			Block b = methods.saveItems(player, event.getDrops());
-			synchronized (DeathExplosion.timedblocks) {
-				DeathExplosion.timedblocks.put(b, new Timer(Variables.time));
-			}
+			final Block b = methods.saveItems(player, event.getDrops());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
+					new Runnable() {
+						public void run() {
+							DeathExplosion.timedblocks.put(b, new Timer(
+									Variables.time));
+						}
+					});
 			player.sendMessage("You have died from someone elses explosion");
 		}
 	}
