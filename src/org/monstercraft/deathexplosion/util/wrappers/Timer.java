@@ -1,13 +1,18 @@
 package org.monstercraft.deathexplosion.util.wrappers;
 
+import org.bukkit.block.Block;
+import org.monstercraft.deathexplosion.util.Methods;
+
 /**
  * Timer
  */
-public class Timer {
+public class Timer implements Runnable {
 
 	private long end;
 	private final long start;
 	private final long period;
+	private final Block b;
+	private final Thread t;
 
 	/**
 	 * Instantiates a new Timer with a given time period in milliseconds.
@@ -15,10 +20,34 @@ public class Timer {
 	 * @param period
 	 *            Time period in milliseconds.
 	 */
-	public Timer(long period) {
+	public Timer(long period, Block b) {
 		this.period = period;
 		this.start = System.currentTimeMillis();
 		this.end = start + period;
+		this.b = b;
+		t = new Thread(this);
+		t.setDaemon(true);
+		t.setPriority(Thread.MIN_PRIORITY);
+		t.start();
+	}
+
+	@Override
+	public void run() {
+		try {
+			while (true) {
+				if (this.getRemaining() == 0) {
+					this.getBlock().setTypeId(0);
+					Methods.removeLWC(getBlock());
+					System.out.println("Chest broken");
+					break;
+				}
+			}
+			t.interrupt();
+			System.out.print("Thread-" + t.getId() + " safely ended!");
+		} catch (Exception e) {
+			System.out.print("Error in ending Thread-" + t.getId());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -71,5 +100,9 @@ public class Timer {
 	public long setEndIn(long ms) {
 		this.end = System.currentTimeMillis() + ms;
 		return this.end;
+	}
+
+	public Block getBlock() {
+		return b;
 	}
 }

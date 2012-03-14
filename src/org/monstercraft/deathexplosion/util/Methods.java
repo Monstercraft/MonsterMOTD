@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.minecraft.server.MobEffect;
+import net.minecraft.server.MobEffectList;
+import net.minecraft.server.Packet41MobEffect;
+import net.minecraft.server.Packet42RemoveMobEffect;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,18 +21,57 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.util.wrappers.TombStone;
 
+import com.griefcraft.lwc.LWC;
+import com.griefcraft.lwc.LWCPlugin;
+import com.griefcraft.model.Protection;
+import com.griefcraft.model.ProtectionTypes;
+
+@SuppressWarnings("deprecation")
 public class Methods {
 
 	private DeathExplosion plugin;
 
 	public Methods(DeathExplosion plugin) {
 		this.plugin = plugin;
+	}
+
+	public static void removeLWC(Block block) {
+		LWC lwc = null;
+		Plugin lwcPlugin = getPlugin("LWC");
+		if (lwcPlugin != null) {
+			lwc = ((LWCPlugin) lwcPlugin).getLWC();
+		}
+		if (lwc != null) {
+			List<Protection> protections = lwc.getPhysicalDatabase()
+					.loadProtectionsByPlayer("BoomyExplody");
+			for (Protection p : protections) {
+				if (p.getBlock().getLocation().equals(block.getLocation())) {
+					p.remove();
+					break;
+				}
+			}
+		}
+	}
+
+	public void registerLWC(Block block) {
+		LWC lwc = null;
+		Plugin lwcPlugin = getPlugin("LWC");
+		if (lwcPlugin != null) {
+			lwc = ((LWCPlugin) lwcPlugin).getLWC();
+		}
+		if (lwc != null) {
+			lwc.getPhysicalDatabase().registerProtection(block.getTypeId(),
+					ProtectionTypes.PUBLIC, block.getWorld().getName(),
+					"BoomyExplody", "", block.getX(), block.getY(),
+					block.getZ());
+		}
 	}
 
 	public static Plugin getPlugin(String name) {
@@ -252,10 +296,25 @@ public class Methods {
 					slot++;
 				}
 			}
+			registerLWC(tBlock.getBlock());
 			return tBlock.getBlock();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void attachStatusBar(Player player) {
+		final CraftPlayer cplr = ((CraftPlayer) player);
+		cplr.getHandle().netServerHandler
+				.sendPacket(new Packet41MobEffect(cplr.getEntityId(),
+						new MobEffect(MobEffectList.HARM.getId(), 0, 0)));
+	}
+
+	public void removeStatusBar(Player player) {
+		final CraftPlayer cplr = ((CraftPlayer) player);
+		cplr.getHandle().netServerHandler
+				.sendPacket(new Packet42RemoveMobEffect(cplr.getEntityId(),
+						new MobEffect(MobEffectList.HARM.getId(), 0, 0)));
 	}
 }

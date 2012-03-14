@@ -1,8 +1,8 @@
 package org.monstercraft.deathexplosion.listeners;
 
+import java.util.Map;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -19,18 +19,19 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.monstercraft.deathexplosion.DeathExplosion;
-import org.monstercraft.deathexplosion.hooks.PreciousStonesHook;
 import org.monstercraft.deathexplosion.hooks.VaultEconomyHook;
 import org.monstercraft.deathexplosion.hooks.WorldGuardHook;
 import org.monstercraft.deathexplosion.util.Methods;
 import org.monstercraft.deathexplosion.util.Variables;
 import org.monstercraft.deathexplosion.util.wrappers.Timer;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 public class DeathExplosionListener extends DeathExplosion implements Listener {
 
-	private DeathExplosion plugin;
-	private Random ran = new Random();
-	private Methods methods;
+	private final DeathExplosion plugin;
+	private final Random ran = new Random();
+	private final Methods methods;
 
 	public DeathExplosionListener(DeathExplosion plugin) {
 		this.plugin = plugin;
@@ -45,11 +46,7 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 				plugin.getHookManager().setPermissionsHook(
 						new VaultEconomyHook(plugin));
 			}
-			if (PluginName.equals("PreciousStones")) {
-				plugin.getHookManager().setPSHook(
-						new PreciousStonesHook(plugin));
-			}
-			if (PluginName.equals("WorldGuard")) {
+			if (PluginName.equalsIgnoreCase("WorldGuard")) {
 				plugin.getHookManager().setWorldGuardHook(
 						new WorldGuardHook(plugin));
 			}
@@ -90,28 +87,22 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 		}
 		Player player = (Player) event.getEntity();
 		Location loc = player.getLocation();
-		Block block = player.getWorld().getBlockAt(loc.getBlockX(),
-				loc.getBlockY(), loc.getBlockZ());
 		if (Variables.off) {
 			player.sendMessage("The plugin is currently disabled");
 			return;
 		}
 		if (plugin.getHookManager().getWGHook() != null) {
-			if (!plugin.getHookManager().getWGHook().getHook()
-					.canBuild(player, block)) {
-				player.sendMessage("You can't explode in this world guard area.");
-				DeathExplosion.getSCH().attachStatusBar(player);
-				return;
-			}
-		}
-		if (plugin.getHookManager().getPSHook() != null) {
-			if (plugin.getHookManager().getPSHook().getHook()
-					.getForceFieldManager().getField(block) != null) {
-				if (plugin.getHookManager().getPSHook().getHook()
-						.getForceFieldManager().getField(block) != null) {
-					player.sendMessage("You can't explode in this ps area.");
-					DeathExplosion.getSCH().attachStatusBar(player);
-					return;
+			if (plugin.getHookManager().getWGHook().getHook()
+					.getGlobalRegionManager().get(loc.getWorld()).getRegions() != null) {
+				Map<String, ProtectedRegion> r = plugin.getHookManager()
+						.getWGHook().getHook().getGlobalRegionManager()
+						.get(loc.getWorld()).getRegions();
+				for (String s : r.keySet()) {
+					if (r.get(s).contains(loc.getBlockX(), loc.getBlockY(),
+							loc.getBlockZ())) {
+						player.sendMessage("You can not explode here!");
+						return;
+					}
 				}
 			}
 		}
@@ -120,51 +111,34 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 				World world = player.getWorld();
 				world.createExplosion(loc, Variables.size);
 				player.sendMessage("You have exploded.");
-				final Block b = methods.saveItems(player, event.getDrops());
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-						new Runnable() {
-							public void run() {
-								DeathExplosion.timedblocks.put(b, new Timer(
-										Variables.time));
-							}
-						});
-				DeathExplosion.getSCH().removeStatusBar(player);
+				Block b = methods.saveItems(player, event.getDrops());
+				new Timer(Variables.time, b);
+				methods.removeStatusBar(player);
 				Variables.map.remove(player.getName());
 			} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-				final Block b = methods.saveItems(player, event.getDrops());
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-						new Runnable() {
-							public void run() {
-								DeathExplosion.timedblocks.put(b, new Timer(
-										Variables.time));
-							}
-						});
+				Block b = methods.saveItems(player, event.getDrops());
+				new Timer(Variables.time, b);
 				player.sendMessage("You have died from someone elses explosion");
 				player.sendMessage("We are sorry, you didn't explode upon death.");
-				DeathExplosion.getSCH().removeStatusBar(player);
+				methods.removeStatusBar(player);
 				Variables.map.remove(player.getName());
 			} else {
 				player.sendMessage("We are sorry, you didn't explode upon death.");
-				DeathExplosion.getSCH().removeStatusBar(player);
+				methods.removeStatusBar(player);
 				Variables.map.remove(player.getName());
 			}
 		} else if (cause.getCause() == DamageCause.BLOCK_EXPLOSION) {
-			final Block b = methods.saveItems(player, event.getDrops());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
-					new Runnable() {
-						public void run() {
-							DeathExplosion.timedblocks.put(b, new Timer(
-									Variables.time));
-						}
-					});
+			Block b = methods.saveItems(player, event.getDrops());
+			new Timer(Variables.time, b);
 			player.sendMessage("You have died from someone elses explosion");
 		}
 	}
 
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player p = event.getPlayer();
 		if (Variables.map.containsKey(p.getName())) {
-			DeathExplosion.getSCH().attachStatusBar(p);
+			Methods.attachStatusBar(p);
 		}
 	}
 }

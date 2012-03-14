@@ -1,21 +1,16 @@
 package org.monstercraft.deathexplosion;
 
-import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.monstercraft.deathexplosion.hooks.StatusHook;
 import org.monstercraft.deathexplosion.listeners.DeathExplosionListener;
 import org.monstercraft.deathexplosion.managers.CommandManager;
 import org.monstercraft.deathexplosion.managers.HookManager;
 import org.monstercraft.deathexplosion.managers.SettingsManager;
-import org.monstercraft.deathexplosion.util.wrappers.Timer;
 
 public class DeathExplosion extends JavaPlugin {
 
@@ -24,30 +19,17 @@ public class DeathExplosion extends JavaPlugin {
 	private CommandManager commandManager;
 	private static SettingsManager settings;
 	private static HookManager hooks;
-	private static StatusHook sch;
-	public static Hashtable<Block, Timer> timedblocks = new Hashtable<Block, Timer>();
 
 	public void onEnable() {
 		settings = new SettingsManager(this);
 		hooks = new HookManager(this);
-		sch = new StatusHook();
 		this.commandManager = new CommandManager();
 		listener = new DeathExplosionListener(this);
 		getServer().getPluginManager().registerEvents(listener, this);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, timing, 20, 200);
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+				"lwc admin purge -remove BoomyExplody");
 		log("DeathExplosion has been enabled!");
 	}
-
-	private Runnable timing = new Runnable() {
-		public void run() {
-			for (Block b : timedblocks.keySet()) {
-				if (timedblocks.get(b).getRemaining() == 0) {
-					b.setType(Material.AIR);
-					timedblocks.remove(b);
-				}
-			}
-		}
-	};
 
 	public void onDisable() {
 		log("DeathExplosion has been disabled.");
@@ -86,9 +68,5 @@ public class DeathExplosion extends JavaPlugin {
 
 	public HookManager getHookManager() {
 		return hooks;
-	}
-
-	public static StatusHook getSCH() {
-		return sch;
 	}
 }

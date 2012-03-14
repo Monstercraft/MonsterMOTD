@@ -1,7 +1,6 @@
 package org.monstercraft.deathexplosion.managers;
 
 import org.monstercraft.deathexplosion.DeathExplosion;
-import org.monstercraft.deathexplosion.hooks.PreciousStonesHook;
 import org.monstercraft.deathexplosion.hooks.VaultEconomyHook;
 import org.monstercraft.deathexplosion.hooks.WorldGuardHook;
 
@@ -15,7 +14,6 @@ public class HookManager {
 
 	private VaultEconomyHook economy = null;
 	private WorldGuardHook wg = null;
-	private PreciousStonesHook ps = null;
 
 	/**
 	 * Creates an instance of the HookManager class.
@@ -26,7 +24,6 @@ public class HookManager {
 	public HookManager(final DeathExplosion plugin) {
 		economy = new VaultEconomyHook(plugin);
 		wg = new WorldGuardHook(plugin);
-		ps = new PreciousStonesHook(plugin);
 	}
 
 	/**
@@ -36,15 +33,6 @@ public class HookManager {
 	 */
 	public VaultEconomyHook getPermissionsHook() {
 		return economy;
-	}
-
-	/**
-	 * Fetches the Permissions hook.
-	 * 
-	 * @return The hook into Permissions.
-	 */
-	public PreciousStonesHook getPSHook() {
-		return ps;
 	}
 
 	/**
@@ -65,17 +53,6 @@ public class HookManager {
 	 */
 	public VaultEconomyHook setPermissionsHook(final VaultEconomyHook hook) {
 		return economy = hook;
-	}
-
-	/**
-	 * Creates a new hook into the plugin.
-	 * 
-	 * @param hook
-	 *            A hook into Permissions.
-	 * @return The new PermissionsHook.
-	 */
-	public PreciousStonesHook setPSHook(final PreciousStonesHook hook) {
-		return ps = hook;
 	}
 
 	/**

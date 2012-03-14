@@ -3,6 +3,8 @@ package org.monstercraft.deathexplosion.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.block.Block;
+
 public class Variables {
 
 	public static boolean announce = true;
@@ -18,5 +20,7 @@ public class Variables {
 	public static Map<String, Double> map = new HashMap<String, Double>();
 
 	public static boolean off = false;
+
+	public static Block last = null;
 
 }

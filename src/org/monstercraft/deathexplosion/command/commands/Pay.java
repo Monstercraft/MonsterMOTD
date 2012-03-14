@@ -3,8 +3,8 @@ package org.monstercraft.deathexplosion.command.commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.monstercraft.deathexplosion.DeathExplosion;
 import org.monstercraft.deathexplosion.command.GameCommand;
+import org.monstercraft.deathexplosion.util.Methods;
 import org.monstercraft.deathexplosion.util.Variables;
 
 public class pay extends GameCommand {
@@ -52,8 +52,7 @@ public class pay extends GameCommand {
 								Double.parseDouble(split[2]));
 						sender.sendMessage("Thanks for paying: "
 								+ Double.valueOf(split[2]) + ".");
-						DeathExplosion.getSCH()
-								.attachStatusBar((Player) sender);
+						Methods.attachStatusBar((Player) sender);
 						return true;
 					} else {
 						sender.sendMessage("You are paying more than enough, the limit is "
