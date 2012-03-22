@@ -2,6 +2,7 @@ package org.monstercraft.deathexplosion.util.wrappers;
 
 import org.bukkit.block.Block;
 import org.monstercraft.deathexplosion.util.Methods;
+import org.monstercraft.deathexplosion.util.Variables;
 
 /**
  * Timer
@@ -21,6 +22,7 @@ public class Timer implements Runnable {
 	 *            Time period in milliseconds.
 	 */
 	public Timer(long period, Block b) {
+		Variables.last = b;
 		this.period = period;
 		this.start = System.currentTimeMillis();
 		this.end = start + period;

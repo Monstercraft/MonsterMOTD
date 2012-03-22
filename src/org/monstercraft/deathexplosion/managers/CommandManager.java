@@ -9,6 +9,7 @@ import org.monstercraft.deathexplosion.command.GameCommand;
 import org.monstercraft.deathexplosion.command.commands.off;
 import org.monstercraft.deathexplosion.command.commands.on;
 import org.monstercraft.deathexplosion.command.commands.pay;
+import org.monstercraft.deathexplosion.command.commands.warp;
 
 /**
  * This class manages all of the plugins commands.
@@ -22,6 +23,7 @@ public class CommandManager {
 
 	public CommandManager() {
 		try {
+			gameCommands.put(3, new warp());
 			gameCommands.put(2, new pay());
 			gameCommands.put(1, new on());
 			gameCommands.put(0, new off());

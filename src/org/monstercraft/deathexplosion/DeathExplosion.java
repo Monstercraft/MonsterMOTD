@@ -11,6 +11,7 @@ import org.monstercraft.deathexplosion.listeners.DeathExplosionListener;
 import org.monstercraft.deathexplosion.managers.CommandManager;
 import org.monstercraft.deathexplosion.managers.HookManager;
 import org.monstercraft.deathexplosion.managers.SettingsManager;
+import org.monstercraft.deathexplosion.managers.TeleportManager;
 
 public class DeathExplosion extends JavaPlugin {
 
@@ -19,10 +20,12 @@ public class DeathExplosion extends JavaPlugin {
 	private CommandManager commandManager;
 	private static SettingsManager settings;
 	private static HookManager hooks;
+	private static TeleportManager teles;
 
 	public void onEnable() {
 		settings = new SettingsManager(this);
 		hooks = new HookManager(this);
+		teles = new TeleportManager(this);
 		this.commandManager = new CommandManager();
 		listener = new DeathExplosionListener(this);
 		getServer().getPluginManager().registerEvents(listener, this);
@@ -68,5 +71,9 @@ public class DeathExplosion extends JavaPlugin {
 
 	public HookManager getHookManager() {
 		return hooks;
+	}
+
+	public static TeleportManager getTeleportManager() {
+		return teles;
 	}
 }
