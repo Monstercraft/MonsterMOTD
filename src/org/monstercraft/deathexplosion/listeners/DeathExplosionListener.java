@@ -25,6 +25,7 @@ import org.monstercraft.deathexplosion.util.Methods;
 import org.monstercraft.deathexplosion.util.Variables;
 import org.monstercraft.deathexplosion.util.wrappers.Timer;
 
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class DeathExplosionListener extends DeathExplosion implements Listener {
@@ -90,6 +91,17 @@ public class DeathExplosionListener extends DeathExplosion implements Listener {
 		if (Variables.off) {
 			player.sendMessage("The plugin is currently disabled");
 			return;
+		}
+		if (!Variables.regions.isEmpty()) {
+			for (String s : Variables.regions.keySet()) {
+				ProtectedCuboidRegion r = Variables.regions.get(s);
+				if (r.contains(loc.getBlockX(), loc.getBlockY(),
+						loc.getBlockZ())) {
+					player.sendMessage("You can not explode here!");
+					return;
+				}
+			}
+
 		}
 		if (plugin.getHookManager().getWGHook() != null) {
 			if (plugin.getHookManager().getWGHook().getHook()

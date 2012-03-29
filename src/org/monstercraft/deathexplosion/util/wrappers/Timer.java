@@ -4,6 +4,9 @@ import org.bukkit.block.Block;
 import org.monstercraft.deathexplosion.util.Methods;
 import org.monstercraft.deathexplosion.util.Variables;
 
+import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+
 /**
  * Timer
  */
@@ -31,6 +34,13 @@ public class Timer implements Runnable {
 		t.setDaemon(true);
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
+		int space = Variables.size * 2;
+		Variables.regions.put(
+				"Monsterirc-" + t.getId(),
+				new ProtectedCuboidRegion("Monsterirc-" + t.getId(),
+						new BlockVector(b.getX() - space, b.getY() - space, b
+								.getZ() - space), new BlockVector(b.getX()
+								+ space, b.getY() + space, b.getZ() + space)));
 	}
 
 	@Override
@@ -44,6 +54,7 @@ public class Timer implements Runnable {
 					break;
 				}
 			}
+			Variables.regions.remove("Monsterirc-" + t.getId());
 			t.interrupt();
 			System.out.print("Thread-" + t.getId() + " safely ended!");
 		} catch (Exception e) {

@@ -91,8 +91,7 @@ public class Methods {
 		try {
 			plugin.getServer().broadcastMessage(
 					"§" + Variables.colorCode + "Player: " + name
-							+ " has died in " + world + " at x:" + x + " Y:"
-							+ y + " Z:" + z);
+							+ " has died in " + world + " type /boom warp to get the loot!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
