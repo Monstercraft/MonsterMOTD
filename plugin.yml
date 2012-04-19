@@ -1,28 +1,10 @@
-name: MonsterTicket
-main: org.monstercraft.monsterticket.Ticket
+name: DeathExplosion
+main: org.monstercraft.deathexplosion.DeathExplosion
 version: 1.0
 author: Fletch_to_99
-description: A ticket management system.
-depend: [Vault]
+description: Players that pay have a chance of exploding on death.
+depend: [Vault, LWC]
 commands:
-  modreq:
-    description: Used to open a help ticket.
-    usage: /modreq (description)
-  claim:
-    description: Used to claim a help ticket.
-    usage: /claim (id)
-  done:
-    description: Used to close a ticket.
-    usage: /done (id)
-  check:
-    description: Used to check all tickets.
-    usage: /check
-  cleanup:
-    description: Used to clean all tickets.
-    usage: /cleanup
-  modlist:
-    description: Check which mods are online.
-    usage: /modlist
-  fkick:
-    description: Kick a player from the support channel.
-    usage: /fkick (player)
+  boom:
+    description: Use /boom pay (amount)
+    usage: Use /boom pay (amount)
