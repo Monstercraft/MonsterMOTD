@@ -1,12 +1,13 @@
-#Monstercraft
+#MonsterIRC
+6/4/2012
 
-Monstercraft is an immensely popular and successful minecraft server. The plugins source code is completely open and free - whether you're a Java expert or just keen to explore, these can be valuable learning resources. 
+MonsterIRC is an immensely popular and successful IRC plugin for bukkit. The plugin's source code is completely open and free - whether you're a Java expert or just keen to explore, these can be valuable learning resources. 
 
 ###Get the code
 
 Download the latest source code with:
 
-    git clone git://github.com/Monstercraft/DeathExplosion.git
+    git clone git://github.com/Monstercraft/MonsterIRC.git
 	
 Keep your source up to date with:
 
@@ -17,6 +18,7 @@ Keep your source up to date with:
 
  * [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/)
  * [Bukkit] (http://ci.bukkit.org/job/dev-CraftBukkit/)
+ * [Vault] (http://dev.bukkit.org/server-mods/vault/)
 
 
 ## Legal 
