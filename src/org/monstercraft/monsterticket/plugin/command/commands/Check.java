@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.command.commands;
+package org.monstercraft.monsterticket.plugin.command.commands;
 
 import java.util.Iterator;
 
@@ -6,9 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.command.GameCommand;
-import org.monstercraft.monsterticket.util.Variables;
-import org.monstercraft.monsterticket.wrappers.HelpTicket;
+import org.monstercraft.monsterticket.plugin.Configuration.Variables;
+import org.monstercraft.monsterticket.plugin.command.GameCommand;
+import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
 
 public class Check extends GameCommand {
 

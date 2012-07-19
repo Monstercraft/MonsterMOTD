@@ -1,16 +1,16 @@
-package org.monstercraft.monsterticket.managers;
+package org.monstercraft.monsterticket.plugin.managers;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.monstercraft.monsterticket.command.GameCommand;
-import org.monstercraft.monsterticket.command.commands.Check;
-import org.monstercraft.monsterticket.command.commands.Claim;
-import org.monstercraft.monsterticket.command.commands.Close;
-import org.monstercraft.monsterticket.command.commands.List;
-import org.monstercraft.monsterticket.command.commands.Open;
+import org.monstercraft.monsterticket.plugin.command.GameCommand;
+import org.monstercraft.monsterticket.plugin.command.commands.Check;
+import org.monstercraft.monsterticket.plugin.command.commands.Claim;
+import org.monstercraft.monsterticket.plugin.command.commands.Close;
+import org.monstercraft.monsterticket.plugin.command.commands.List;
+import org.monstercraft.monsterticket.plugin.command.commands.Open;
 
 /**
  * This class manages all of the plugins commands.

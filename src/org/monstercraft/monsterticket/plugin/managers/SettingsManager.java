@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.managers;
+package org.monstercraft.monsterticket.plugin.managers;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.util.Variables;
-import org.monstercraft.monsterticket.wrappers.HelpTicket;
+import org.monstercraft.monsterticket.plugin.Configuration.Variables;
+import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
 
 /**
  * This class contains all of the plugins settings.

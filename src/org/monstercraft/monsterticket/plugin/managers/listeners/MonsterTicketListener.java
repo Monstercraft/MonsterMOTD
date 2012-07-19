@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.listeners;
+package org.monstercraft.monsterticket.plugin.managers.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -7,10 +7,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.monstercraft.monsterticket.command.commands.Close;
-import org.monstercraft.monsterticket.util.Variables;
-import org.monstercraft.monsterticket.wrappers.HelpTicket;
-import org.monstercraft.monsterticket.wrappers.PrivateChatter;
+import org.monstercraft.monsterticket.plugin.Configuration.Variables;
+import org.monstercraft.monsterticket.plugin.command.commands.Close;
+import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
+import org.monstercraft.monsterticket.plugin.wrappers.PrivateChatter;
 
 /**
  * This class listens for chat ingame to pass to the IRC.

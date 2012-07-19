@@ -6,13 +6,15 @@ import java.util.logging.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.monstercraft.monsterticket.listeners.MonsterTicketListener;
-import org.monstercraft.monsterticket.managers.CommandManager;
-import org.monstercraft.monsterticket.managers.HandleManager;
-import org.monstercraft.monsterticket.managers.HookManager;
-import org.monstercraft.monsterticket.managers.SettingsManager;
+import org.monstercraft.monsterticket.plugin.Configuration;
+import org.monstercraft.monsterticket.plugin.managers.CommandManager;
+import org.monstercraft.monsterticket.plugin.managers.HandleManager;
+import org.monstercraft.monsterticket.plugin.managers.HookManager;
+import org.monstercraft.monsterticket.plugin.managers.SettingsManager;
+import org.monstercraft.monsterticket.plugin.managers.listeners.MonsterTicketListener;
+import org.monstercraft.monsterticket.plugin.util.Metrics;
 
-public class Ticket extends JavaPlugin {
+public class Ticket extends JavaPlugin implements Runnable {
 
 	private static Logger logger = Logger.getLogger("Minecraft");
 	private CommandManager commandManager;
@@ -29,6 +31,10 @@ public class Ticket extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(listener, this);
 		this.commandManager = new CommandManager();
 		log("MonsterTickets has been enabled!");
+		Thread t = new Thread(this);
+		t.setDaemon(true);
+		t.setPriority(Thread.MAX_PRIORITY);
+		t.start();
 	}
 
 	public void onDisable() {
@@ -82,6 +88,25 @@ public class Ticket extends JavaPlugin {
 
 	public static SettingsManager getSettingsManager() {
 		return settings;
+	}
+
+	public void run() {
+		try {
+			log("Setting up metrics!");
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+			String newVersion = Configuration.checkForUpdates(this,
+					Configuration.URLS.UPDATE_URL);
+			if (!newVersion.contains(Configuration.getCurrentVerison(this))) {
+				log(newVersion + " is out! You are running "
+						+ Configuration.getCurrentVerison(this));
+				log("Update MonsterIRC at: http://dev.bukkit.org/server-mods/monstertickets");
+			} else {
+				log("You are using the latest version of MonsterIRC");
+			}
+		} catch (Exception e) {
+			debug(e);
+		}
 	}
 
 }

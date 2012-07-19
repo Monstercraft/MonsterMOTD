@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.managers.handlers;
+package org.monstercraft.monsterticket.plugin.managers.handlers;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.entity.Player;
 import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.command.GameCommand;
+import org.monstercraft.monsterticket.plugin.command.GameCommand;
 
 /**
  * This handles all of the plugins permissions.

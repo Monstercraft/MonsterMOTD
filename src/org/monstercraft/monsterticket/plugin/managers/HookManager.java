@@ -1,9 +1,9 @@
-package org.monstercraft.monsterticket.managers;
+package org.monstercraft.monsterticket.plugin.managers;
 
 import net.milkbowl.vault.permission.Permission;
 
 import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.hooks.VaultPermissionsHook;
+import org.monstercraft.monsterticket.plugin.hooks.VaultPermissionsHook;
 
 /**
  * This class manages all of the hooks used within the plugin.

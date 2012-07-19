@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.command;
+package org.monstercraft.monsterticket.plugin.command;
 
 import org.bukkit.command.CommandSender;
 import org.monstercraft.monsterticket.Ticket;

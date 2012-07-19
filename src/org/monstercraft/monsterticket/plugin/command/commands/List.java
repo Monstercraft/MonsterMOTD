@@ -1,11 +1,11 @@
-package org.monstercraft.monsterticket.command.commands;
+package org.monstercraft.monsterticket.plugin.command.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.command.GameCommand;
+import org.monstercraft.monsterticket.plugin.command.GameCommand;
 
 public class List extends GameCommand {
 

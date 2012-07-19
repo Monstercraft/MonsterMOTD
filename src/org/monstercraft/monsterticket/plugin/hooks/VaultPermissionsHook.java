@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.hooks;
+package org.monstercraft.monsterticket.plugin.hooks;
 
 import net.milkbowl.vault.permission.Permission;
 
