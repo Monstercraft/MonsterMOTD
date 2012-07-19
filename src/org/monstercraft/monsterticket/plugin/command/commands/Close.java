@@ -43,9 +43,9 @@ public class Close extends GameCommand {
 	public static void close(Player mod) {
 		int id = -1;
 		for (PrivateChatter pc : Variables.priv) {
-			if (pc.getMod().equals((Player) mod)) {
-				Variables.priv.remove(pc);
+			if (pc.getMod().equals(mod)) {
 				id = pc.getID();
+				Variables.priv.remove(pc);
 				break;
 			}
 		}

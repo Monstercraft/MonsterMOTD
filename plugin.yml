@@ -1,19 +1,19 @@
 name: MonsterTickets
 main: org.monstercraft.monsterticket.Ticket
-version: 1.0
+version: 1.01
 author: Fletch_to_99
 description: A ticket management system.
 depend: [Vault]
 commands:
   request:
     description: Used to open a help ticket.
-    usage: /request (description)
+    usage: /request (description) or /help (description)
   claim:
     description: Used to claim a help ticket.
     usage: /claim (id)
   close:
     description: Used to close a ticket.
-    usage: /done (id)
+    usage: /close
   check:
     description: Used to check all tickets.
     usage: /check

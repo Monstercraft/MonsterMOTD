@@ -46,6 +46,12 @@ public class Claim extends GameCommand {
 				return true;
 			}
 		}
+		if (Integer.parseInt(split[1]) > Variables.ticketid
+				|| 1 > Integer.parseInt(split[1])) {
+			sender.sendMessage(ChatColor.GREEN
+					+ "No ticket exists with that number!");
+			return true;
+		}
 		for (HelpTicket t : Variables.tickets.keySet()) {
 			if (t.getID() == Integer.parseInt(split[1])) {
 				Player playa = Bukkit.getPlayer(t.getPlayerName());
@@ -74,7 +80,8 @@ public class Claim extends GameCommand {
 					}
 				}
 				Variables.tickets.put(t, true);
-				Variables.priv.add(new PrivateChatter((Player) sender, playa, t.getID()));
+				Variables.priv.add(new PrivateChatter((Player) sender, playa, t
+						.getID()));
 				Player p = Bukkit.getPlayer(t.getPlayerName());
 				sender.sendMessage(ChatColor.GREEN + "Ticket " + t.getID()
 						+ " sucessfully claimed.");
@@ -85,8 +92,6 @@ public class Claim extends GameCommand {
 							+ "Your support ticket request has been accepted!");
 					p.sendMessage(ChatColor.RED
 							+ "Start chatting with the mod assisting you.");
-					p.sendMessage(ChatColor.GREEN
-							+ "******************************************************");
 					p.sendMessage(ChatColor.GREEN
 							+ "******************************************************");
 					p.sendMessage(ChatColor.RED + "[Support]"
@@ -100,9 +105,10 @@ public class Claim extends GameCommand {
 							+ sender.getName() + ChatColor.WHITE
 							+ " how can I help you?");
 				}
-				break;
+				return true;
 			}
 		}
+		sender.sendMessage(ChatColor.GREEN + "Ticket already closed!");
 		return true;
 	}
 

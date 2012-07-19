@@ -100,7 +100,7 @@ public class Ticket extends JavaPlugin implements Runnable {
 			if (!newVersion.contains(Configuration.getCurrentVerison(this))) {
 				log(newVersion + " is out! You are running "
 						+ Configuration.getCurrentVerison(this));
-				log("Update MonsterIRC at: http://dev.bukkit.org/server-mods/monstertickets");
+				log("Update MonsterTickets at: http://dev.bukkit.org/server-mods/monstertickets");
 			} else {
 				log("You are using the latest version of MonsterTickets.");
 			}

@@ -5,11 +5,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.monstercraft.monsterticket.plugin.Configuration.Variables;
 import org.monstercraft.monsterticket.plugin.command.commands.Close;
-import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
 import org.monstercraft.monsterticket.plugin.wrappers.PrivateChatter;
 
 /**
@@ -47,7 +47,7 @@ public class MonsterTicketListener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		event.getPlayer().sendMessage(
 				ChatColor.RED + "To open a support request type:"
@@ -55,21 +55,34 @@ public class MonsterTicketListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		String msg = event.getMessage();
+		String[] message = msg.split("\\s+");
+		if (msg.startsWith("/help") && msg.length() > 5
+				&& Variables.overridehelp) {
+			if (message.length == 2 && canParse(message[1])) {
+				return;
+			}
+			msg = "/request " + msg.substring(6);
+			event.setMessage(msg);
+		}
+	}
+
+	private boolean canParse(String message) {
+		try {
+			Integer.parseInt(message);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		for (PrivateChatter pc : Variables.priv) {
 			if (pc.getMod().equals(event.getPlayer())
 					|| pc.getNoob().equals(event.getPlayer())) {
-				Variables.priv.remove(pc);
-				int id = -1;
-				for (HelpTicket t : Variables.tickets.keySet()) {
-					if (t.getPlayerName().equalsIgnoreCase(
-							pc.getNoob().getName())) {
-						id = t.getID();
-					}
-				}
-				if (id != -1) {
-					Close.close(pc.getMod());
-				}
+				Close.close(pc.getMod());
 				return;
 			}
 		}

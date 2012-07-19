@@ -69,6 +69,7 @@ public class Configuration {
 		public static LinkedHashMap<HelpTicket, Boolean> tickets = new LinkedHashMap<HelpTicket, Boolean>();
 		public static int ticketid = 1;
 		public static ArrayList<PrivateChatter> priv = new ArrayList<PrivateChatter>();
+		public static boolean overridehelp = false;
 
 	}
 }
