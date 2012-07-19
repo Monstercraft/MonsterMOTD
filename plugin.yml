@@ -1,6 +1,6 @@
 name: MonsterTickets
 main: org.monstercraft.monsterticket.Ticket
-version: 1.01
+version: 1.02
 author: Fletch_to_99
 description: A ticket management system.
 depend: [Vault]
@@ -20,3 +20,6 @@ commands:
   modlist:
     description: Check which mods are online.
     usage: /modlist
+  mtreload:
+    description: Reloads the plugins settings.
+    usage: /mtreload

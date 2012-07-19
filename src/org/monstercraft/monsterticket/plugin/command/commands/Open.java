@@ -72,7 +72,7 @@ public class Open extends GameCommand {
 
 	@Override
 	public String getPermission() {
-		return "monsterticket.help";
+		return "monstertickets.help";
 	}
 
 }

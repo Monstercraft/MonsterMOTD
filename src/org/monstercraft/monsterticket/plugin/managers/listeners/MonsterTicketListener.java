@@ -49,9 +49,15 @@ public class MonsterTicketListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		event.getPlayer().sendMessage(
-				ChatColor.RED + "To open a support request type:"
-						+ ChatColor.GREEN + "/request (issue)");
+		if (Variables.overridehelp) {
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "To open a support request type:"
+							+ ChatColor.GREEN + " /help (issue)");
+		} else {
+			event.getPlayer().sendMessage(
+					ChatColor.RED + "To open a support request type:"
+							+ ChatColor.GREEN + " /request (issue)");
+		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

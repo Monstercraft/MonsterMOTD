@@ -11,6 +11,7 @@ import org.monstercraft.monsterticket.plugin.command.commands.Claim;
 import org.monstercraft.monsterticket.plugin.command.commands.Close;
 import org.monstercraft.monsterticket.plugin.command.commands.List;
 import org.monstercraft.monsterticket.plugin.command.commands.Open;
+import org.monstercraft.monsterticket.plugin.command.commands.Reload;
 
 /**
  * This class manages all of the plugins commands.
@@ -24,6 +25,7 @@ public class CommandManager {
 
 	public CommandManager() {
 		try {
+			gameCommands.put(5, new Reload());
 			gameCommands.put(4, new List());
 			gameCommands.put(3, new Check());
 			gameCommands.put(2, new Open());

@@ -37,7 +37,7 @@ public class Close extends GameCommand {
 
 	@Override
 	public String getPermission() {
-		return "monsterticket.close";
+		return "monstertickets.close";
 	}
 
 	public static void close(Player mod) {
@@ -66,9 +66,10 @@ public class Close extends GameCommand {
 								+ " closed ticket " + t.getID());
 					}
 				}
-				break;
+				return;
 			}
 		}
+		mod.sendMessage(ChatColor.GREEN + "You are not currently supporting a ticket!");
 	}
 
 }

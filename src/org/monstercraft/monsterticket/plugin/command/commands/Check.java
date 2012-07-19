@@ -162,7 +162,7 @@ public class Check extends GameCommand {
 
 	@Override
 	public String getPermission() {
-		return "monsterticket.check";
+		return "monstertickets.check";
 	}
 
 }

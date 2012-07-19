@@ -123,7 +123,7 @@ public class Claim extends GameCommand {
 
 	@Override
 	public String getPermission() {
-		return "monsterticket.claim";
+		return "monstertickets.claim";
 	}
 
 }

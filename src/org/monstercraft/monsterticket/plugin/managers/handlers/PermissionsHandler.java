@@ -41,7 +41,7 @@ public class PermissionsHandler extends Ticket {
 			final GameCommand command) {
 		if (Ticket.getHookManager().getPermissionsHook() != null) {
 			if (perms != null) {
-				return perms.has(player, "monsterticket.mod")
+				return perms.has(player, "monstertickets.mod")
 						|| perms.has(player, command.getPermission())
 						|| player.isOp();
 			} else {
@@ -55,7 +55,7 @@ public class PermissionsHandler extends Ticket {
 	public boolean hasModPerm(final Player player) {
 		if (Ticket.getHookManager().getPermissionsHook() != null) {
 			if (perms != null) {
-				return perms.has(player, "monsterticket.mod") || player.isOp();
+				return perms.has(player, "monstertickets.mod") || player.isOp();
 			} else {
 				return player.isOp();
 			}
