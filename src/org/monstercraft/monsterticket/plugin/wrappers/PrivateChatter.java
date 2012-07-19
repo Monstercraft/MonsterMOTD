@@ -7,10 +7,13 @@ public class PrivateChatter {
 	private Player mod;
 
 	private Player noob;
+	
+	private int id;
 
-	public PrivateChatter(Player mod, Player noob) {
+	public PrivateChatter(Player mod, Player noob, int id) {
 		this.mod = mod;
 		this.noob = noob;
+		this.id = id;
 	}
 
 	public Player getMod() {
@@ -19,6 +22,10 @@ public class PrivateChatter {
 
 	public Player getNoob() {
 		return noob;
+	}
+	
+	public int getID() {
+		return id;
 	}
 
 }

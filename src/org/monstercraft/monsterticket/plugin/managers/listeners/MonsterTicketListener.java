@@ -68,7 +68,7 @@ public class MonsterTicketListener implements Listener {
 					}
 				}
 				if (id != -1) {
-					Close.close(pc.getMod(), String.valueOf(id));
+					Close.close(pc.getMod());
 				}
 				return;
 			}

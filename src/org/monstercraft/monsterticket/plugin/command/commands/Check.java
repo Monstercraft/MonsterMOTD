@@ -30,6 +30,9 @@ public class Check extends GameCommand {
 				sender.sendMessage("Permissions not detected, unable to run any ticket commands.");
 				return true;
 			}
+		} else {
+			sender.sendMessage("You must be a player to run this command!");
+			return true;
 		}
 		if (split.length == 1) {
 			sender.sendMessage(ChatColor.RED
@@ -41,7 +44,7 @@ public class Check extends GameCommand {
 					+ " are claimed support tickets that are not closed!");
 			sender.sendMessage(ChatColor.RED
 					+ "-----------------------------------------------");
-			displayPage(1, sender);
+			displayPage(1, (Player) sender);
 		} else if (split.length == 3) {
 			if (split[1].equalsIgnoreCase("page")) {
 				if (!canParse(split[2])) {
@@ -67,7 +70,7 @@ public class Check extends GameCommand {
 						+ " are claimed support tickets that are not closed!");
 				sender.sendMessage(ChatColor.RED
 						+ "-----------------------------------------------");
-				displayPage(pg, sender);
+				displayPage(pg, (Player) sender);
 			}
 		} else if (split.length == 2) {
 			if (!canParse(split[1])) {
@@ -119,7 +122,7 @@ public class Check extends GameCommand {
 		return true;
 	}
 
-	private void displayPage(int page, CommandSender sender) {
+	private void displayPage(int page, Player sender) {
 		int numPages = Variables.tickets.size() / 15;
 		if (numPages == 0) {
 			numPages = 1;
@@ -127,60 +130,8 @@ public class Check extends GameCommand {
 		int start = (page - 1) * 15;
 		int end = start + 15;
 		int c = 0;
-		if (sender instanceof Player) {
-			if (Ticket.getHandleManager().getPermissionsHandler()
-					.hasModPerm((Player) sender)) {
-				Iterator<HelpTicket> i = Variables.tickets.keySet().iterator();
-				while (i.hasNext()) {
-					HelpTicket h = i.next();
-					if (c < start) {
-						c++;
-						continue;
-					}
-					if (c > end) {
-						break;
-					}
-					if (!Variables.tickets.get(h)) {
-						sender.sendMessage(ChatColor.GREEN + "" + h.getID()
-								+ " - " + ChatColor.RED + h.getPlayerName()
-								+ ChatColor.GREEN + " - "
-								+ getShortDescription(h.getDescription()));
-					} else {
-						sender.sendMessage(ChatColor.BLUE + "" + h.getID()
-								+ " - " + ChatColor.RED + h.getPlayerName()
-								+ " - " + ChatColor.BLUE
-								+ getShortDescription(h.getDescription()));
-					}
-					c++;
-				}
-			} else {
-				Iterator<HelpTicket> i = Variables.tickets.keySet().iterator();
-				while (i.hasNext()) {
-					HelpTicket h = i.next();
-					if (c < start) {
-						c++;
-						continue;
-					}
-					if (c > end) {
-						break;
-					}
-					if (h.getPlayerName() == sender.getName()) {
-						if (!Variables.tickets.get(h)) {
-							sender.sendMessage(ChatColor.GREEN + "" + h.getID()
-									+ " - " + ChatColor.RED + h.getPlayerName()
-									+ ChatColor.GREEN + " - "
-									+ getShortDescription(h.getDescription()));
-						} else {
-							sender.sendMessage(ChatColor.BLUE + "" + h.getID()
-									+ " - " + ChatColor.RED + h.getPlayerName()
-									+ " - " + ChatColor.BLUE
-									+ getShortDescription(h.getDescription()));
-						}
-					}
-					c++;
-				}
-			}
-		} else {
+		if (Ticket.getHandleManager().getPermissionsHandler()
+				.hasModPerm((Player) sender)) {
 			Iterator<HelpTicket> i = Variables.tickets.keySet().iterator();
 			while (i.hasNext()) {
 				HelpTicket h = i.next();
@@ -192,13 +143,13 @@ public class Check extends GameCommand {
 					break;
 				}
 				if (!Variables.tickets.get(h)) {
-					sender.sendMessage(ChatColor.GREEN + " -" + h.getID()
-							+ " - " + ChatColor.RED + h.getPlayerName()
+					sender.sendMessage(ChatColor.GREEN + "" + h.getID() + " - "
+							+ ChatColor.RED + h.getPlayerName()
 							+ ChatColor.GREEN + " - "
 							+ getShortDescription(h.getDescription()));
 				} else {
-					sender.sendMessage(ChatColor.BLUE + " -" + h.getID()
-							+ " - " + ChatColor.RED + h.getPlayerName() + " - "
+					sender.sendMessage(ChatColor.BLUE + "" + h.getID() + " - "
+							+ ChatColor.RED + h.getPlayerName() + " - "
 							+ ChatColor.BLUE
 							+ getShortDescription(h.getDescription()));
 				}

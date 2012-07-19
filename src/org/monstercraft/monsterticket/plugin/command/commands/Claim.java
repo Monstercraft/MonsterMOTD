@@ -74,7 +74,7 @@ public class Claim extends GameCommand {
 					}
 				}
 				Variables.tickets.put(t, true);
-				Variables.priv.add(new PrivateChatter((Player) sender, playa));
+				Variables.priv.add(new PrivateChatter((Player) sender, playa, t.getID()));
 				Player p = Bukkit.getPlayer(t.getPlayerName());
 				sender.sendMessage(ChatColor.GREEN + "Ticket " + t.getID()
 						+ " sucessfully claimed.");
