@@ -1,10 +1,10 @@
-package org.monstercraft.monsterticket.plugin.command.commands;
+package org.monstercraft.support.plugin.command.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.command.GameCommand;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.command.GameCommand;
 
 public class Reload extends GameCommand {
 
@@ -16,8 +16,8 @@ public class Reload extends GameCommand {
 	@Override
 	public boolean execute(CommandSender sender, String[] split) {
 		if (sender instanceof Player) {
-			if (Ticket.getHandleManager().getPermissionsHandler() != null) {
-				if (!Ticket.getHandleManager().getPermissionsHandler()
+			if (MonsterTickets.getHandleManager().getPermissionsHandler() != null) {
+				if (!MonsterTickets.getHandleManager().getPermissionsHandler()
 						.hasCommandPerms(((Player) sender), this)) {
 					sender.sendMessage("You don't have permission to preform this command.");
 					return true;
@@ -27,7 +27,7 @@ public class Reload extends GameCommand {
 				return true;
 			}
 		}
-		Ticket.getSettingsManager().load();
+		MonsterTickets.getSettingsManager().load();
 		sender.sendMessage(ChatColor.GREEN
 				+ "Successfully reloaded plugin settings!");
 		return true;

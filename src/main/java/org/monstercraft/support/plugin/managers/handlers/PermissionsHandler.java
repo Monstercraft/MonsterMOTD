@@ -1,12 +1,12 @@
-package org.monstercraft.monsterticket.plugin.managers.handlers;
+package org.monstercraft.support.plugin.managers.handlers;
 
 import java.util.List;
 
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.entity.Player;
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.command.GameCommand;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.command.GameCommand;
 
 /**
  * This handles all of the plugins permissions.
@@ -14,7 +14,7 @@ import org.monstercraft.monsterticket.plugin.command.GameCommand;
  * @author fletch_to_99 <fletchto99@hotmail.com>
  * 
  */
-public class PermissionsHandler extends Ticket {
+public class PermissionsHandler {
 
 	private final Permission perms;
 
@@ -39,7 +39,7 @@ public class PermissionsHandler extends Ticket {
 	 */
 	public boolean hasCommandPerms(final Player player,
 			final GameCommand command) {
-		if (Ticket.getHookManager().getPermissionsHook() != null) {
+		if (MonsterTickets.getHookManager().getPermissionsHook() != null) {
 			if (perms != null) {
 				return perms.has(player, "monstertickets.mod")
 						|| perms.has(player, command.getPermission())
@@ -53,7 +53,7 @@ public class PermissionsHandler extends Ticket {
 	}
 
 	public boolean hasModPerm(final Player player) {
-		if (Ticket.getHookManager().getPermissionsHook() != null) {
+		if (MonsterTickets.getHookManager().getPermissionsHook() != null) {
 			if (perms != null) {
 				return perms.has(player, "monstertickets.mod") || player.isOp();
 			} else {
@@ -96,7 +96,7 @@ public class PermissionsHandler extends Ticket {
 				String name = player.getName();
 				return perms.getPlayerGroups(world, name);
 			} catch (Exception e) {
-				Ticket.debug(e);
+				MonsterTickets.debug(e);
 			}
 		}
 		return new String[0];

@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.plugin.wrappers;
+package org.monstercraft.support.plugin.wrappers;
 
 public class HelpTicket {
 

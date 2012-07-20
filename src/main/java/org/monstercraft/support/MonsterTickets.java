@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket;
+package org.monstercraft.support;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -6,15 +6,15 @@ import java.util.logging.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.monstercraft.monsterticket.plugin.Configuration;
-import org.monstercraft.monsterticket.plugin.managers.CommandManager;
-import org.monstercraft.monsterticket.plugin.managers.HandleManager;
-import org.monstercraft.monsterticket.plugin.managers.HookManager;
-import org.monstercraft.monsterticket.plugin.managers.SettingsManager;
-import org.monstercraft.monsterticket.plugin.managers.listeners.MonsterTicketListener;
-import org.monstercraft.monsterticket.plugin.util.Metrics;
+import org.monstercraft.support.plugin.Configuration;
+import org.monstercraft.support.plugin.managers.CommandManager;
+import org.monstercraft.support.plugin.managers.HandleManager;
+import org.monstercraft.support.plugin.managers.HookManager;
+import org.monstercraft.support.plugin.managers.SettingsManager;
+import org.monstercraft.support.plugin.managers.listeners.MonsterTicketListener;
+import org.monstercraft.support.plugin.util.Metrics;
 
-public class Ticket extends JavaPlugin implements Runnable {
+public class MonsterTickets extends JavaPlugin implements Runnable {
 
 	private static Logger logger = Logger.getLogger("Minecraft");
 	private CommandManager commandManager;
@@ -25,8 +25,8 @@ public class Ticket extends JavaPlugin implements Runnable {
 
 	public void onEnable() {
 		settings = new SettingsManager(this);
-		Ticket.hooks = new HookManager(this);
-		Ticket.handles = new HandleManager();
+		hooks = new HookManager(this);
+		handles = new HandleManager();
 		listener = new MonsterTicketListener();
 		getServer().getPluginManager().registerEvents(listener, this);
 		this.commandManager = new CommandManager();

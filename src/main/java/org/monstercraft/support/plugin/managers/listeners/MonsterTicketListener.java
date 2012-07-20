@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.plugin.managers.listeners;
+package org.monstercraft.support.plugin.managers.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,10 +10,10 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.Configuration.Variables;
-import org.monstercraft.monsterticket.plugin.command.commands.Close;
-import org.monstercraft.monsterticket.plugin.wrappers.PrivateChatter;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.Configuration.Variables;
+import org.monstercraft.support.plugin.command.commands.Close;
+import org.monstercraft.support.plugin.wrappers.PrivateChatter;
 
 /**
  * This class listens for chat ingame to pass to the IRC.
@@ -45,8 +45,8 @@ public class MonsterTicketListener implements Listener {
 								+ event.getPlayer().getDisplayName() + ": "
 								+ ChatColor.WHITE + event.getMessage());
 				for (Player pl : Bukkit.getOnlinePlayers()) {
-					if (Ticket.getHandleManager().getPermissionsHandler()
-							.hasSpyPerm(pl)
+					if (MonsterTickets.getHandleManager()
+							.getPermissionsHandler().hasSpyPerm(pl)
 							&& pl != pc.getMod() && pl != pc.getNoob()) {
 						pl.sendMessage(ChatColor.DARK_BLUE + "[Spy]"
 								+ ChatColor.RED + "[Support] "

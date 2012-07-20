@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.plugin.wrappers;
+package org.monstercraft.support.plugin.wrappers;
 
 import org.bukkit.entity.Player;
 
@@ -7,7 +7,7 @@ public class PrivateChatter {
 	private Player mod;
 
 	private Player noob;
-	
+
 	private int id;
 
 	public PrivateChatter(Player mod, Player noob, int id) {
@@ -23,7 +23,7 @@ public class PrivateChatter {
 	public Player getNoob() {
 		return noob;
 	}
-	
+
 	public int getID() {
 		return id;
 	}

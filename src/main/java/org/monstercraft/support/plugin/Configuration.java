@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.plugin;
+package org.monstercraft.support.plugin;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.bukkit.plugin.Plugin;
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
-import org.monstercraft.monsterticket.plugin.wrappers.PrivateChatter;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.wrappers.HelpTicket;
+import org.monstercraft.support.plugin.wrappers.PrivateChatter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -55,7 +55,7 @@ public class Configuration {
 				return firstNodes.item(0).getNodeValue();
 			}
 		} catch (Exception e) {
-			Ticket.debug(e);
+			MonsterTickets.debug(e);
 		}
 		return currentVersion;
 	}

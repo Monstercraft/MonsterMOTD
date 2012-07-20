@@ -1,10 +1,10 @@
-package org.monstercraft.monsterticket.plugin.hooks;
+package org.monstercraft.support.plugin.hooks;
 
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.monstercraft.monsterticket.Ticket;
+import org.monstercraft.support.MonsterTickets;
 
 /**
  * This class listens for chat ingame to pass to the IRC.
@@ -12,10 +12,10 @@ import org.monstercraft.monsterticket.Ticket;
  * @author fletch_to_99 <fletchto99@hotmail.com>
  * 
  */
-public class VaultPermissionsHook extends Ticket {
+public class VaultPermissionsHook {
 
 	private Permission PermissionsHook;
-	private Ticket plugin;
+	private MonsterTickets plugin;
 
 	/**
 	 * Creates an instance of the PermissionsHook class.
@@ -23,7 +23,7 @@ public class VaultPermissionsHook extends Ticket {
 	 * @param plugin
 	 *            The parent plugin.
 	 */
-	public VaultPermissionsHook(final Ticket plugin) {
+	public VaultPermissionsHook(final MonsterTickets plugin) {
 		this.plugin = plugin;
 		boolean b = setupPermissions();
 		if (b) {
@@ -31,14 +31,15 @@ public class VaultPermissionsHook extends Ticket {
 					.getPlugin(PermissionsHook.getName());
 			if (PermissionsHook != null) {
 				if (permsPlugin != null) {
-					Ticket.log("Vault permissions detected; hooking: "
+					MonsterTickets.log("Vault permissions detected; hooking: "
 							+ permsPlugin.getDescription().getFullName());
 				} else {
-					Ticket.log("Permissions found!");
+					MonsterTickets.log("Permissions found!");
 				}
 			}
 		} else {
-			Ticket.log("Could not hook into permissions using vault! (Permissions not found?)");
+			MonsterTickets
+					.log("Could not hook into permissions using vault! (Permissions not found?)");
 		}
 	}
 

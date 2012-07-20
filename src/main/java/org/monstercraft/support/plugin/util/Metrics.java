@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.plugin.util;
+package org.monstercraft.support.plugin.util;
 
 /*
  * Copyright 2011 Tyler Blair. All rights reserved.

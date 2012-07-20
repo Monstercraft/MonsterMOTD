@@ -1,4 +1,4 @@
-package org.monstercraft.monsterticket.plugin.managers;
+package org.monstercraft.support.plugin.managers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,9 +10,9 @@ import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.Configuration.Variables;
-import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.Configuration.Variables;
+import org.monstercraft.support.plugin.wrappers.HelpTicket;
 
 /**
  * This class contains all of the plugins settings.
@@ -20,8 +20,8 @@ import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
  * @author fletch_to_99 <fletchto99@hotmail.com>
  * 
  */
-public class SettingsManager extends Ticket {
-	private Ticket plugin = null;
+public class SettingsManager {
+	private MonsterTickets plugin = null;
 
 	public static String SETTINGS_PATH = "plugins/MonsterTickets/";
 
@@ -33,7 +33,7 @@ public class SettingsManager extends Ticket {
 	 * @param plugin
 	 *            The parent plugin.
 	 */
-	public SettingsManager(Ticket plugin) {
+	public SettingsManager(MonsterTickets plugin) {
 		this.plugin = plugin;
 		load();
 	}
@@ -42,7 +42,7 @@ public class SettingsManager extends Ticket {
 		try {
 			config.save(file);
 		} catch (IOException e) {
-			debug(e);
+			MonsterTickets.debug(e);
 		}
 	}
 
@@ -59,7 +59,7 @@ public class SettingsManager extends Ticket {
 			save(config, CONFIGURATION_FILE);
 			saveTicketsConfig();
 		} catch (Exception e) {
-			debug(e);
+			MonsterTickets.debug(e);
 		}
 	}
 
@@ -73,15 +73,15 @@ public class SettingsManager extends Ticket {
 		boolean exists = CONFIGURATION_FILE.exists();
 		if (exists) {
 			try {
-				log("Loading settings!");
+				MonsterTickets.log("Loading settings!");
 				config.options()
 						.header("MonsterTickets configuration file, refer to our DBO page for help.");
 				config.load(CONFIGURATION_FILE);
 			} catch (Exception e) {
-				debug(e);
+				MonsterTickets.debug(e);
 			}
 		} else {
-			log("Loading default settings!");
+			MonsterTickets.log("Loading default settings!");
 			config.options()
 					.header("MonsterTickets configuration file, refer to our DBO page for help.");
 			config.options().copyDefaults(true);
@@ -93,7 +93,7 @@ public class SettingsManager extends Ticket {
 			save(config, CONFIGURATION_FILE);
 			loadTicketsConfig();
 		} catch (Exception e) {
-			debug(e);
+			MonsterTickets.debug(e);
 		}
 	}
 

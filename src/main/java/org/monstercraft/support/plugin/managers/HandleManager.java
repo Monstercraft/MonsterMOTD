@@ -1,9 +1,9 @@
-package org.monstercraft.monsterticket.plugin.managers;
+package org.monstercraft.support.plugin.managers;
 
 import net.milkbowl.vault.permission.Permission;
 
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.managers.handlers.PermissionsHandler;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.managers.handlers.PermissionsHandler;
 
 /**
  * This class contains all of the plugins handles.
@@ -11,7 +11,7 @@ import org.monstercraft.monsterticket.plugin.managers.handlers.PermissionsHandle
  * @author fletch_to_99 <fletchto99@hotmail.com>
  * 
  */
-public class HandleManager extends Ticket {
+public class HandleManager {
 
 	private PermissionsHandler perms = null;
 
@@ -22,7 +22,8 @@ public class HandleManager extends Ticket {
 	 *            The parent plugin.
 	 */
 	public HandleManager() {
-		perms = new PermissionsHandler(getHookManager().getPermissionsHook());
+		perms = new PermissionsHandler(MonsterTickets.getHookManager()
+				.getPermissionsHook());
 	}
 
 	/**

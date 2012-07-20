@@ -1,14 +1,14 @@
-package org.monstercraft.monsterticket.plugin.command.commands;
+package org.monstercraft.support.plugin.command.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.monstercraft.monsterticket.Ticket;
-import org.monstercraft.monsterticket.plugin.Configuration.Variables;
-import org.monstercraft.monsterticket.plugin.command.GameCommand;
-import org.monstercraft.monsterticket.plugin.wrappers.HelpTicket;
-import org.monstercraft.monsterticket.plugin.wrappers.PrivateChatter;
+import org.monstercraft.support.MonsterTickets;
+import org.monstercraft.support.plugin.Configuration.Variables;
+import org.monstercraft.support.plugin.command.GameCommand;
+import org.monstercraft.support.plugin.wrappers.HelpTicket;
+import org.monstercraft.support.plugin.wrappers.PrivateChatter;
 
 public class Close extends GameCommand {
 
@@ -20,8 +20,8 @@ public class Close extends GameCommand {
 	@Override
 	public boolean execute(CommandSender sender, String[] split) {
 		if (sender instanceof Player) {
-			if (Ticket.getHandleManager().getPermissionsHandler() != null) {
-				if (!Ticket.getHandleManager().getPermissionsHandler()
+			if (MonsterTickets.getHandleManager().getPermissionsHandler() != null) {
+				if (!MonsterTickets.getHandleManager().getPermissionsHandler()
 						.hasCommandPerms(((Player) sender), this)) {
 					sender.sendMessage("You don't have permission to preform this command.");
 					return true;
@@ -88,8 +88,8 @@ public class Close extends GameCommand {
 				mod.sendMessage(ChatColor.GREEN + "Ticket " + t.getID()
 						+ " sucessfully closed.");
 				for (Player pl : Bukkit.getOnlinePlayers()) {
-					if (Ticket.getHandleManager().getPermissionsHandler()
-							.hasModPerm(pl)) {
+					if (MonsterTickets.getHandleManager()
+							.getPermissionsHandler().hasModPerm(pl)) {
 						pl.sendMessage(ChatColor.GREEN + mod.getName()
 								+ " closed ticket " + t.getID());
 					}
@@ -119,8 +119,8 @@ public class Close extends GameCommand {
 				mod.sendMessage(ChatColor.GREEN + "Ticket " + t.getID()
 						+ " sucessfully closed.");
 				for (Player pl : Bukkit.getOnlinePlayers()) {
-					if (Ticket.getHandleManager().getPermissionsHandler()
-							.hasModPerm(pl)) {
+					if (MonsterTickets.getHandleManager()
+							.getPermissionsHandler().hasModPerm(pl)) {
 						pl.sendMessage(ChatColor.GREEN + mod.getName()
 								+ " closed ticket " + t.getID());
 					}
@@ -143,7 +143,7 @@ public class Close extends GameCommand {
 			}
 		}
 		for (Player pl : Bukkit.getOnlinePlayers()) {
-			if (Ticket.getHandleManager().getPermissionsHandler()
+			if (MonsterTickets.getHandleManager().getPermissionsHandler()
 					.hasModPerm(pl)) {
 				pl.sendMessage(ChatColor.GREEN
 						+ "All support tickets have been closed by "

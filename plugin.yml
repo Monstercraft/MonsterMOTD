@@ -1,5 +1,5 @@
 name: MonsterTickets
-main: org.monstercraft.monsterticket.Ticket
+main: org.monstercraft.support.MonsterTickets
 version: 1.02
 author: Fletch_to_99
 description: A ticket management system.
