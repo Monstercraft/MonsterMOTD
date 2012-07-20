@@ -31,7 +31,35 @@ public class Close extends GameCommand {
 				return true;
 			}
 		}
-		close((Player) sender);
+		if (split.length == 2) {
+			if (split[1].equalsIgnoreCase("all")) {
+				closeAll(sender);
+				sender.sendMessage(ChatColor.GREEN
+						+ "Successfully closed all open and claimed tickets!");
+				return true;
+			} else if (canParse(split[1])) {
+				close(sender, Integer.parseInt(split[1]));
+				return true;
+			} else {
+				sender.sendMessage(ChatColor.GREEN + "Invalid command usage.");
+				return true;
+			}
+		}
+		if (sender instanceof Player) {
+			close((Player) sender);
+			return true;
+		}
+		sender.sendMessage(ChatColor.GREEN
+				+ "You must be ingame and supporting a ticket to close a ticket.");
+		return true;
+	}
+
+	private boolean canParse(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException ex) {
+			return false;
+		}
 		return true;
 	}
 
@@ -69,7 +97,59 @@ public class Close extends GameCommand {
 				return;
 			}
 		}
-		mod.sendMessage(ChatColor.GREEN + "You are not currently supporting a ticket!");
+		mod.sendMessage(ChatColor.GREEN
+				+ "You are not currently supporting a ticket!");
+	}
+
+	public static void close(CommandSender mod, int id) {
+		for (PrivateChatter pc : Variables.priv) {
+			if (pc.getID() == id) {
+				Variables.priv.remove(pc);
+				break;
+			}
+		}
+		for (HelpTicket t : Variables.tickets.keySet()) {
+			if (t.getID() == id) {
+				Variables.tickets.remove(t);
+				Player p = Bukkit.getPlayer(t.getPlayerName());
+				if (p != null) {
+					p.sendMessage(ChatColor.GREEN
+							+ "Your support ticket has been closed.");
+				}
+				mod.sendMessage(ChatColor.GREEN + "Ticket " + t.getID()
+						+ " sucessfully closed.");
+				for (Player pl : Bukkit.getOnlinePlayers()) {
+					if (Ticket.getHandleManager().getPermissionsHandler()
+							.hasModPerm(pl)) {
+						pl.sendMessage(ChatColor.GREEN + mod.getName()
+								+ " closed ticket " + t.getID());
+					}
+				}
+				return;
+			}
+		}
+		mod.sendMessage(ChatColor.GREEN
+				+ "You are not currently supporting a ticket!");
+	}
+
+	public static void closeAll(CommandSender sender) {
+		Variables.priv.clear();
+		for (HelpTicket t : Variables.tickets.keySet()) {
+			Variables.tickets.remove(t);
+			Player p = Bukkit.getPlayer(t.getPlayerName());
+			if (p != null) {
+				p.sendMessage(ChatColor.GREEN
+						+ "Your support ticket has been forced closed, if this was a mistake please create a new ticket.");
+			}
+		}
+		for (Player pl : Bukkit.getOnlinePlayers()) {
+			if (Ticket.getHandleManager().getPermissionsHandler()
+					.hasModPerm(pl)) {
+				pl.sendMessage(ChatColor.GREEN
+						+ "All support tickets have been closed by "
+						+ sender.getName() + ".");
+			}
+		}
 	}
 
 }

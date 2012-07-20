@@ -1,6 +1,8 @@
 package org.monstercraft.monsterticket.plugin.managers.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -8,6 +10,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.monstercraft.monsterticket.Ticket;
 import org.monstercraft.monsterticket.plugin.Configuration.Variables;
 import org.monstercraft.monsterticket.plugin.command.commands.Close;
 import org.monstercraft.monsterticket.plugin.wrappers.PrivateChatter;
@@ -41,6 +44,16 @@ public class MonsterTicketListener implements Listener {
 						ChatColor.RED + "[Support] "
 								+ event.getPlayer().getDisplayName() + ": "
 								+ ChatColor.WHITE + event.getMessage());
+				for (Player pl : Bukkit.getOnlinePlayers()) {
+					if (Ticket.getHandleManager().getPermissionsHandler()
+							.hasSpyPerm(pl)
+							&& pl != pc.getMod() && pl != pc.getNoob()) {
+						pl.sendMessage(ChatColor.DARK_BLUE + "[Spy]"
+								+ ChatColor.RED + "[Support] "
+								+ event.getPlayer().getDisplayName() + ": "
+								+ ChatColor.WHITE + event.getMessage());
+					}
+				}
 				event.setCancelled(true);
 				return;
 			}

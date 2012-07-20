@@ -101,4 +101,12 @@ public class PermissionsHandler extends Ticket {
 		}
 		return new String[0];
 	}
+
+	public boolean hasSpyPerm(Player pl) {
+		return hasNode(pl, "monstertickets.mod.spy");
+	}
+
+	public boolean hasNode(Player player, String node) {
+		return perms.has(player, node);
+	}
 }
