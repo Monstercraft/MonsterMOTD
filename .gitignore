@@ -14,5 +14,6 @@
 /.settings
 /bin
 /temp/*
+/video/*
 /temp.txt
 /nbproject

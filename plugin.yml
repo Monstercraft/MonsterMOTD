@@ -13,10 +13,10 @@ commands:
     usage: /claim (id)
   close:
     description: Used to close a ticket.
-    usage: /close
+    usage: /close or /close (id) or /close all
   check:
     description: Used to check all tickets.
-    usage: /check
+    usage: /check or /check (ticket id) or /check page (page #)
   modlist:
     description: Check which mods are online.
     usage: /modlist
