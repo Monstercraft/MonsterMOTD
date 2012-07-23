@@ -1,9 +1,9 @@
-package org.monstercraft.support.plugin.managers;
+package org.monstercraft.motd.plugin.managers;
+
+import org.monstercraft.motd.MonsterMOTD;
+import org.monstercraft.motd.plugin.managers.handlers.PermissionsHandler;
 
 import net.milkbowl.vault.permission.Permission;
-
-import org.monstercraft.support.MonsterTickets;
-import org.monstercraft.support.plugin.managers.handlers.PermissionsHandler;
 
 /**
  * This class contains all of the plugins handles.
@@ -22,7 +22,7 @@ public class HandleManager {
 	 *            The parent plugin.
 	 */
 	public HandleManager() {
-		perms = new PermissionsHandler(MonsterTickets.getHookManager()
+		perms = new PermissionsHandler(MonsterMOTD.getHookManager()
 				.getPermissionsHook());
 	}
 

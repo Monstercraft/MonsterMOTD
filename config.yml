@@ -1,3 +1,1 @@
-MONSTERTICKETS:
-    OPTIONS:
-        OVERRIDE_HELP_COMMAND: false
+MOTD: 'A Minecraft server'

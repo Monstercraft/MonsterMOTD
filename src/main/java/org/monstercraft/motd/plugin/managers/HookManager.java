@@ -1,9 +1,9 @@
-package org.monstercraft.support.plugin.managers;
+package org.monstercraft.motd.plugin.managers;
+
+import org.monstercraft.motd.MonsterMOTD;
+import org.monstercraft.motd.plugin.managers.hooks.VaultPermissionsHook;
 
 import net.milkbowl.vault.permission.Permission;
-
-import org.monstercraft.support.MonsterTickets;
-import org.monstercraft.support.plugin.hooks.VaultPermissionsHook;
 
 /**
  * This class manages all of the hooks used within the plugin.
@@ -14,7 +14,7 @@ import org.monstercraft.support.plugin.hooks.VaultPermissionsHook;
 public class HookManager {
 
 	private VaultPermissionsHook permissions = null;
-	private final MonsterTickets plugin;
+	private final MonsterMOTD plugin;
 
 	/**
 	 * Creates an instance of the HookManager class.
@@ -22,7 +22,7 @@ public class HookManager {
 	 * @param plugin
 	 *            The parent plugin.
 	 */
-	public HookManager(final MonsterTickets plugin) {
+	public HookManager(final MonsterMOTD plugin) {
 		this.plugin = plugin;
 		permissions = new VaultPermissionsHook(plugin);
 	}

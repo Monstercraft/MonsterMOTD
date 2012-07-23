@@ -1,15 +1,11 @@
-package org.monstercraft.support.plugin;
+package org.monstercraft.motd.plugin;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.bukkit.plugin.Plugin;
-import org.monstercraft.support.MonsterTickets;
-import org.monstercraft.support.plugin.wrappers.HelpTicket;
-import org.monstercraft.support.plugin.wrappers.PrivateChatter;
+import org.monstercraft.motd.MonsterMOTD;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -55,21 +51,16 @@ public class Configuration {
 				return firstNodes.item(0).getNodeValue();
 			}
 		} catch (Exception e) {
-			MonsterTickets.debug(e);
+			MonsterMOTD.debug(e);
 		}
 		return currentVersion;
 	}
 
 	public static class URLS {
-		public static String UPDATE_URL = "http://dev.bukkit.org/server-mods/monstertickets/files.rss";
+		public static String UPDATE_URL = "http://dev.bukkit.org/server-mods/monstermotd/files.rss";
 	}
-
+	
 	public static class Variables {
-
-		public static LinkedHashMap<HelpTicket, Boolean> tickets = new LinkedHashMap<HelpTicket, Boolean>();
-		public static int ticketid = 1;
-		public static ArrayList<PrivateChatter> priv = new ArrayList<PrivateChatter>();
-		public static boolean overridehelp = false;
-
+		public static String defaultMOTD = "A Minecraft server";
 	}
 }

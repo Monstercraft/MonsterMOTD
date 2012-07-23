@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.monstercraft.support</groupId>
-	<artifactId>MonsterTickets</artifactId>
-	<version>1.02</version>
+	<groupId>org.monstercraft.,otd</groupId>
+	<artifactId>MonsterMOTD</artifactId>
+	<version>1.0</version>
 
 
 	<properties>
@@ -14,14 +14,14 @@
 
 
 	<scm>
-		<connection>scm:git:git://github.com/Monstercraft/MonsterTickets.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/Monstercraft/MonsterTickets.git</developerConnection>
-		<url>https://github.com/Monstercraft/MonsterTickets</url>
+		<connection>scm:git:git://github.com/Monstercraft/MonsterMOTD.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/Monstercraft/MonsterMOTD.git</developerConnection>
+		<url>https://github.com/Monstercraft/MonsterMOTD</url>
 	</scm>
 
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://dev.monstercraft.org:8080/job/MonsterTickets</url>
+		<url>http://dev.monstercraft.org:8080/job/MonsterMOTD</url>
 	</ciManagement>
 
 	<repositories>
@@ -31,7 +31,7 @@
         </repository>
 		<repository>
 			<id>central</id>
-			<url>file:///var/lib/jenkins/workspace/MonsterTickets/.repository/</url>
+			<url>file:///var/lib/jenkins/workspace/MonsterMOTD/.repository/</url>
 		</repository>
 	</repositories>
 

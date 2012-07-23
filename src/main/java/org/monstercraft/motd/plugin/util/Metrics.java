@@ -1,4 +1,4 @@
-package org.monstercraft.support.plugin.util;
+package org.monstercraft.motd.plugin.util;
 
 /*
  * Copyright 2011 Tyler Blair. All rights reserved.

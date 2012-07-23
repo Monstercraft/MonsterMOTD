@@ -1,25 +1,9 @@
-name: MonsterTickets
-main: org.monstercraft.support.MonsterTickets
-version: 1.02
+name: MonsterMOTD
+main: org.monstercraft.motd.MonsterMOTD
+version: 1.0
 author: Fletch_to_99
-description: A ticket management system.
-depend: [Vault]
+description: A simple ingame MOTD manager.
 commands:
-  request:
-    description: Used to open a help ticket.
-    usage: /request (description) or /help (description)
-  claim:
-    description: Used to claim a help ticket.
-    usage: /claim (id)
-  close:
-    description: Used to close a ticket.
-    usage: /close or /close (id) or /close all
-  check:
-    description: Used to check all tickets.
-    usage: /check or /check (ticket id) or /check page (page #)
-  modlist:
-    description: Check which mods are online.
-    usage: /modlist
-  mtreload:
-    description: Reloads the plugins settings.
-    usage: /mtreload
+  motd:
+    description: Used to see the message of the day.
+    usage: /motd

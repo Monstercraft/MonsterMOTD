@@ -1,10 +1,10 @@
-MonsterTicket is an immensely popular and successful support ticket plugin for bukkit. The plugin's source code is completely open and free - whether you're a Java expert or just keen to explore, these can be valuable learning resources. 
+MonsterMOTD is an immensely popular and successful support ticket plugin for bukkit. The plugin's source code is completely open and free - whether you're a Java expert or just keen to explore, these can be valuable learning resources. 
 
 ###Get the code
 
 Download the latest source code with:
 
-    git clone git://github.com/Monstercraft/MonsterTicket.git
+    git clone git://github.com/Monstercraft/MonsterMOTD.git
 	
 Keep your source up to date with:
 
