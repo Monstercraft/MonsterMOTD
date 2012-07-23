@@ -1,9 +1,0 @@
-name: MonsterMOTD
-main: org.monstercraft.motd.MonsterMOTD
-version: 1.0
-author: Fletch_to_99
-description: A simple ingame MOTD manager.
-commands:
-  motd:
-    description: Used to see the message of the day.
-    usage: /motd

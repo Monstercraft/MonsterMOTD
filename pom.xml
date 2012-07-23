@@ -7,11 +7,9 @@
 	<artifactId>MonsterMOTD</artifactId>
 	<version>1.00</version>
 
-
 	<properties>
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 	</properties>
-
 
 	<scm>
 		<connection>scm:git:git://github.com/Monstercraft/MonsterMOTD.git</connection>
@@ -29,48 +27,41 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
-		<repository>
-			<id>central</id>
-			<url>file:///var/lib/jenkins/workspace/MonsterMOTD/.repository/</url>
-		</repository>
 	</repositories>
-
 
 	<dependencies>
 	    <dependency>
 	      <groupId>org.bukkit</groupId>
-	      <artifactId>craftbukkit</artifactId>
+	      <artifactId>bukkit</artifactId>
 	      <version>[1.2.5-R4.0,)</version>
 	      <type>jar</type>
 	    </dependency>
-		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>Vault</artifactId>
-			<version>1.2.9-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>
-				<directory>${basedir}/</directory>
+				<directory>${basedir}/src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
 					<include>config.yml</include>
 					<include>plugin.yml</include>
 				</includes>
 			</resource>
+			<resource>
+                <targetPath>.</targetPath>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>LICENSE</include>
+                </includes>
+            </resource>
 		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
-				<configuration>
-					<showDeprecation>true</showDeprecation>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
