@@ -1,0 +1,26 @@
+name: MonsterMOTD
+main: org.monstercraft.motd.MonsterMOTD
+version: '${project.version}'
+author: Fletch_to_99
+description: A simple in-game MOTD manager.
+commands:
+  motd:
+    description: Used to see the message of the day.
+    usage: /motd
+permissions:
+  monstermotd.clear:
+    description: Clear the motd
+    default: op
+  monstermotd.set:
+    description: Set the motd
+    default: op
+  monstermotd.view:
+    description: View the motd
+    default: op
+  monstermotd.admin:
+    description: All the nodes
+    default: op
+    children:
+      monstermotd.clear: true
+      monstermotd.set: true
+      monstermotd.view: true
