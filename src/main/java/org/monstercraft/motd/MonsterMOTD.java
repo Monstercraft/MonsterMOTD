@@ -104,7 +104,7 @@ public class MonsterMOTD extends JavaPlugin implements Listener {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		if ((args.length > 1) && args[0].equalsIgnoreCase("clear")) {
+		if ((args.length > 1) && args[1].equalsIgnoreCase("clear")) {
 			if (!sender.hasPermission("monstermotd.clear")) {
 				sender.sendMessage(this.DENIED);
 				return true;
@@ -115,7 +115,7 @@ public class MonsterMOTD extends JavaPlugin implements Listener {
 					+ ChatColor.RESET + this.defaultMOTD);
 			return true;
 		}
-		if ((args.length > 1) && args[0].equalsIgnoreCase("set")) {
+		if ((args.length > 1) && args[1].equalsIgnoreCase("set")) {
 			if (!sender.hasPermission("monstermotd.set")) {
 				sender.sendMessage(this.DENIED);
 				return true;
@@ -140,6 +140,7 @@ public class MonsterMOTD extends JavaPlugin implements Listener {
 		if (sender.hasPermission("monstermotd.view")) {
 			sender.sendMessage(ChatColor.GREEN + "Todays MOTD: "
 					+ ChatColor.RESET + this.currentMOTD);
+			return true;
 		}
 		sender.sendMessage(this.DENIED);
 		return true;
