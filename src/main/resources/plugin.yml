@@ -4,9 +4,9 @@ version: '${project.version}'
 author: Fletch_to_99
 description: A simple in-game MOTD manager.
 commands:
-  motd:
+  mmotd:
     description: Used to see the message of the day.
-    usage: /motd
+    usage: /mmotd
 permissions:
   monstermotd.clear:
     description: Clear the motd

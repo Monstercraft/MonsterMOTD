@@ -5,7 +5,7 @@
 
 	<groupId>org.monstercraft.motd</groupId>
 	<artifactId>MonsterMOTD</artifactId>
-	<version>1.00</version>
+	<version>1.01</version>
 
 	<properties>
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
